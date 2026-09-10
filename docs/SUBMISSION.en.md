@@ -36,4 +36,12 @@ Next: test unseen projects, improve requirement review, and measure human verifi
 ## Attribution and publication fields
 Built with AI coding assistance. Pocket Budget is an original example. TodoMVC React is pinned with its upstream license and provenance in the frozen manifest. Runtime planning used the real connected model; unit tests that simulate provider responses are labeled.
 
-This is an AI-assisted submission draft for author review. Public repository, free judge URL, public video URL and Builder profile fields remain to be filled only after publication. Local readiness is not a completed submission.
+This is an AI-assisted submission draft for author review.
+
+- Public repository: https://github.com/WeiR-h/loopcheck
+- Automated verification: https://github.com/WeiR-h/loopcheck/actions/runs/34462275115
+- Free judge URL: pending AWS deployment and external verification.
+- YouTube/Vimeo URL: pending publication.
+- Builder profile: author to supply.
+
+Public source and local readiness are not a completed submission. No human time-saving result is claimed.

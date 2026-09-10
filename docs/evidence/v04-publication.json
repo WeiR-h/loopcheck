@@ -1,0 +1,36 @@
+{
+  "verified_at": "2026-09-10",
+  "repository": "https://github.com/WeiR-h/loopcheck",
+  "visibility": "PUBLIC",
+  "tested_commit": "9af20f82cad8769bde883766579ac13d7f77c0ac",
+  "ci_run": "https://github.com/WeiR-h/loopcheck/actions/runs/34462275115",
+  "ci_conclusion": "success",
+  "tests": {
+    "passed": 25,
+    "seconds": 38.232,
+    "platform": "GitHub Actions Ubuntu / Python 3.12"
+  },
+  "benchmark": {
+    "case_count": 12,
+    "expected_outcomes_met": 12,
+    "false_green_faults": 0,
+    "false_alarms": 0,
+    "model_calls": 0
+  },
+  "container": {
+    "status": "passed",
+    "memory_limit_mib": 768,
+    "peak_memory_mib": 324.27,
+    "oom_killed": false,
+    "model_calls": 0,
+    "limitation": "Container memory measurement on a CI host; not an AWS 1 GB instance or a live-provider load test."
+  },
+  "not_yet_verified": [
+    "AWS deployment",
+    "Free hosted judging URL",
+    "YouTube/Vimeo video publication",
+    "Builder Center article publication",
+    "Devpost submission"
+  ],
+  "human_efficiency": "NOT MEASURED. No human time saving percentage is claimed."
+}

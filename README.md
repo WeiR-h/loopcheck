@@ -38,6 +38,6 @@
 
 ## 参赛状态
 
-本地升级版本与证据已准备；公开仓库、云端演示、公开视频链接和正式提交仍需完成并核验。2026-09-10 已确认宿主机 GitHub 授权有效；当前未发现可用 AWS 部署凭据。未部署 AgentCore，也不宣称已获参赛审核或奖项认可。
+2026-09-10：[公开源码](https://github.com/WeiR-h/loopcheck)已发布；[Linux CI](https://github.com/WeiR-h/loopcheck/actions/runs/34462275115)通过 25 项测试、12 个冻结改动案例和全新 Docker 构建验收。容器在 768 MiB 上限下峰值 324.27 MiB，无 OOM；此次 CI 未调用模型，不能代替真实 AWS 1 GB 实例负载验证。云端免费演示、YouTube/Vimeo 视频、Builder Center 文章和正式提交仍待完成。尚未新建付费 AWS 资源，AgentCore 未部署。
 
 MIT；AI 辅助开发。TodoMVC 为明确标注版本的外部评测样例，不属于本项目原创成果。完整技术边界、安装命令与许可证说明见英文 README。

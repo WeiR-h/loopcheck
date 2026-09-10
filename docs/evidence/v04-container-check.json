@@ -1,0 +1,217 @@
+{
+  "version": "0.4.0",
+  "status": "passed",
+  "scope": "Fresh Linux Docker build, public-mode boundaries, three real browser flows across baseline/injected-fault/restoration",
+  "memory_limit_mib": 768,
+  "peak_memory_mib": 324.27,
+  "oom_killed": false,
+  "model_calls": 0,
+  "baseline": {
+    "checks": [
+      {
+        "title": "Accurate balance",
+        "expectation": "Income 1200 minus spending 350 leaves 850.00",
+        "status": "passed",
+        "step": 4,
+        "expected": {
+          "action": "expect_text",
+          "target": {
+            "by": "label",
+            "value": "Remaining balance",
+            "name": ""
+          },
+          "value": "850.00",
+          "count": 0,
+          "checked": true
+        },
+        "actual": "All declared browser assertions passed",
+        "screenshot": "flow-0.png",
+        "steps_completed": 4,
+        "seconds": 0.22
+      },
+      {
+        "title": "Reject invalid amounts",
+        "expectation": "A negative amount displays a validation error",
+        "status": "passed",
+        "step": 3,
+        "expected": {
+          "action": "expect_text",
+          "target": {
+            "by": "role",
+            "value": "alert",
+            "name": ""
+          },
+          "value": "Enter non-negative amounts.",
+          "count": 0,
+          "checked": true
+        },
+        "actual": "All declared browser assertions passed",
+        "screenshot": "flow-1.png",
+        "steps_completed": 3,
+        "seconds": 0.18
+      },
+      {
+        "title": "Remember after reload",
+        "expectation": "Saved income, spending, and balance survive a reload",
+        "status": "passed",
+        "step": 7,
+        "expected": {
+          "action": "expect_text",
+          "target": {
+            "by": "label",
+            "value": "Remaining balance",
+            "name": ""
+          },
+          "value": "2150.00",
+          "count": 0,
+          "checked": true
+        },
+        "actual": "All declared browser assertions passed",
+        "screenshot": "flow-2.png",
+        "steps_completed": 7,
+        "seconds": 0.22
+      }
+    ],
+    "source": "real_playwright_chromium",
+    "all_passed": true
+  },
+  "injected_fault": {
+    "checks": [
+      {
+        "title": "Accurate balance",
+        "expectation": "Income 1200 minus spending 350 leaves 850.00",
+        "status": "failed",
+        "step": 4,
+        "expected": {
+          "action": "expect_text",
+          "target": {
+            "by": "label",
+            "value": "Remaining balance",
+            "name": ""
+          },
+          "value": "850.00",
+          "count": 0,
+          "checked": true
+        },
+        "actual": "Locator expected to have text '850.00'\nActual value: 1550.00 \nCall log:\n  - Expect \"to_have_text\" with timeout 2000ms\n  - waiting for get_by_label(\"Remaining balance\", exact=True)\n    21 \u00d7 locator resolved to <output id=\"balance\" aria-label=\"Remaining balance\">1550.00</output>\n       - unexpected value \"1550.00\"\n\nAria snapshot:\n- status \"Remaining balance\": \"1550.00\"",
+        "screenshot": "flow-0.png",
+        "steps_completed": 3,
+        "seconds": 2.22
+      },
+      {
+        "title": "Reject invalid amounts",
+        "expectation": "A negative amount displays a validation error",
+        "status": "passed",
+        "step": 3,
+        "expected": {
+          "action": "expect_text",
+          "target": {
+            "by": "role",
+            "value": "alert",
+            "name": ""
+          },
+          "value": "Enter non-negative amounts.",
+          "count": 0,
+          "checked": true
+        },
+        "actual": "All declared browser assertions passed",
+        "screenshot": "flow-1.png",
+        "steps_completed": 3,
+        "seconds": 0.16
+      },
+      {
+        "title": "Remember after reload",
+        "expectation": "Saved income, spending, and balance survive a reload",
+        "status": "failed",
+        "step": 7,
+        "expected": {
+          "action": "expect_text",
+          "target": {
+            "by": "label",
+            "value": "Remaining balance",
+            "name": ""
+          },
+          "value": "2150.00",
+          "count": 0,
+          "checked": true
+        },
+        "actual": "Locator expected to have text '2150.00'\nActual value: 2450.00 \nCall log:\n  - Expect \"to_have_text\" with timeout 2000ms\n  - waiting for get_by_label(\"Remaining balance\", exact=True)\n    21 \u00d7 locator resolved to <output id=\"balance\" aria-label=\"Remaining balance\">2450.00</output>\n       - unexpected value \"2450.00\"\n\nAria snapshot:\n- status \"Remaining balance\": \"2450.00\"",
+        "screenshot": "flow-2.png",
+        "steps_completed": 6,
+        "seconds": 2.21
+      }
+    ],
+    "source": "real_playwright_chromium",
+    "all_passed": false
+  },
+  "restored": {
+    "checks": [
+      {
+        "title": "Accurate balance",
+        "expectation": "Income 1200 minus spending 350 leaves 850.00",
+        "status": "passed",
+        "step": 4,
+        "expected": {
+          "action": "expect_text",
+          "target": {
+            "by": "label",
+            "value": "Remaining balance",
+            "name": ""
+          },
+          "value": "850.00",
+          "count": 0,
+          "checked": true
+        },
+        "actual": "All declared browser assertions passed",
+        "screenshot": "flow-0.png",
+        "steps_completed": 4,
+        "seconds": 0.23
+      },
+      {
+        "title": "Reject invalid amounts",
+        "expectation": "A negative amount displays a validation error",
+        "status": "passed",
+        "step": 3,
+        "expected": {
+          "action": "expect_text",
+          "target": {
+            "by": "role",
+            "value": "alert",
+            "name": ""
+          },
+          "value": "Enter non-negative amounts.",
+          "count": 0,
+          "checked": true
+        },
+        "actual": "All declared browser assertions passed",
+        "screenshot": "flow-1.png",
+        "steps_completed": 3,
+        "seconds": 0.18
+      },
+      {
+        "title": "Remember after reload",
+        "expectation": "Saved income, spending, and balance survive a reload",
+        "status": "passed",
+        "step": 7,
+        "expected": {
+          "action": "expect_text",
+          "target": {
+            "by": "label",
+            "value": "Remaining balance",
+            "name": ""
+          },
+          "value": "2150.00",
+          "count": 0,
+          "checked": true
+        },
+        "actual": "All declared browser assertions passed",
+        "screenshot": "flow-2.png",
+        "steps_completed": 7,
+        "seconds": 0.25
+      }
+    ],
+    "source": "real_playwright_chromium",
+    "all_passed": true
+  },
+  "limitation": "Container memory measurement on a CI host; not an AWS 1 GB instance or a live-provider load test."
+}
