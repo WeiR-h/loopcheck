@@ -47,3 +47,22 @@ jobs:
             docs/evidence/v04-benchmark.json
             docs/evidence/v04-frozen-cases.json
           retention-days: 30
+
+  container:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build the release Dockerfile
+        run: docker build -t loopcheck:ci .
+      - name: Public container browser gate at 768 MiB
+        run: python scripts/container_smoke.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: container-verification
+          path: docs/evidence/v04-container-check.json
+          retention-days: 30
