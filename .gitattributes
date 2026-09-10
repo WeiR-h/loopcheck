@@ -1,0 +1,2 @@
+# Preserve source-package bytes and frozen evidence hashes across platforms.
+* -text

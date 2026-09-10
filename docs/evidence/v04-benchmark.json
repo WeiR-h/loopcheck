@@ -1,0 +1,904 @@
+{
+  "version": "0.4.0",
+  "frozen_manifest_sha256": "f6c9c71eec235c1e65c34154b5053854abc429ff90cb939d8bfe64fffc8a7c6c",
+  "disclosure": "Artificial mutations; developer-defined (AI-assisted) frozen acceptance flows; no model calls. LoopCheck frontend uses its running backend through a local proxy.",
+  "public_react_commit": "ff43b02e59dfa604386bb382034b2cd07c2bcd8a",
+  "baseline": [
+    {
+      "app": "budget",
+      "checks": [
+        {
+          "title": "Accurate balance",
+          "expectation": "Income 1200 minus spending 350 leaves 850.00",
+          "status": "passed",
+          "step": 4,
+          "expected": {
+            "action": "expect_text",
+            "target": {
+              "by": "label",
+              "value": "Remaining balance",
+              "name": ""
+            },
+            "value": "850.00",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-0.png",
+          "steps_completed": 4,
+          "seconds": 0.83
+        },
+        {
+          "title": "Reject invalid amounts",
+          "expectation": "A negative amount displays a validation error",
+          "status": "passed",
+          "step": 3,
+          "expected": {
+            "action": "expect_text",
+            "target": {
+              "by": "role",
+              "value": "alert",
+              "name": ""
+            },
+            "value": "Enter non-negative amounts.",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-1.png",
+          "steps_completed": 3,
+          "seconds": 0.39
+        },
+        {
+          "title": "Remember after reload",
+          "expectation": "Saved income, spending, and balance survive a reload",
+          "status": "passed",
+          "step": 7,
+          "expected": {
+            "action": "expect_text",
+            "target": {
+              "by": "label",
+              "value": "Remaining balance",
+              "name": ""
+            },
+            "value": "2150.00",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-2.png",
+          "steps_completed": 7,
+          "seconds": 0.44
+        }
+      ],
+      "source": "real_playwright_chromium",
+      "all_passed": true
+    },
+    {
+      "app": "react",
+      "checks": [
+        {
+          "title": "Create a named todo",
+          "expectation": "Adding Alpha displays Alpha",
+          "status": "passed",
+          "step": 3,
+          "expected": {
+            "action": "expect_text",
+            "target": {
+              "by": "text",
+              "value": "Alpha",
+              "name": ""
+            },
+            "value": "Alpha",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-0.png",
+          "steps_completed": 3,
+          "seconds": 0.94
+        },
+        {
+          "title": "Delete the created todo",
+          "expectation": "Deleting Alpha removes it from the list",
+          "status": "passed",
+          "step": 5,
+          "expected": {
+            "action": "expect_count",
+            "target": {
+              "by": "text",
+              "value": "Alpha",
+              "name": ""
+            },
+            "value": "",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-1.png",
+          "steps_completed": 5,
+          "seconds": 0.58
+        }
+      ],
+      "source": "real_playwright_chromium",
+      "all_passed": true
+    },
+    {
+      "app": "loopcheck",
+      "checks": [
+        {
+          "title": "Switch the workspace language",
+          "expectation": "English toggles the main heading into English",
+          "status": "passed",
+          "step": 2,
+          "expected": {
+            "action": "expect_text",
+            "target": {
+              "by": "role",
+              "value": "heading",
+              "name": "Keep every change honest."
+            },
+            "value": "Keep every change honest.",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-0.png",
+          "steps_completed": 2,
+          "seconds": 0.7
+        },
+        {
+          "title": "Start with an actionable example",
+          "expectation": "The sample connects and pre-fills a concrete change goal",
+          "status": "passed",
+          "step": 2,
+          "expected": {
+            "action": "expect_value",
+            "target": {
+              "by": "label",
+              "value": "这次想改什么，哪些行为必须保留？",
+              "name": ""
+            },
+            "value": "保留三项行为：收入 1200 减去支出 350，余额为 850.00；输入负数时显示校验错误；保存收入 2300 和支出 150 后，刷新页面仍保留数据。",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-1.png",
+          "steps_completed": 2,
+          "seconds": 0.7
+        }
+      ],
+      "source": "real_playwright_chromium",
+      "all_passed": true
+    }
+  ],
+  "cases": [
+    {
+      "id": "B1",
+      "app": "budget",
+      "kind": "fault",
+      "detected_failure": true,
+      "expected_outcome_met": true,
+      "checks": [
+        {
+          "title": "Accurate balance",
+          "expectation": "Income 1200 minus spending 350 leaves 850.00",
+          "status": "failed",
+          "step": 4,
+          "expected": {
+            "action": "expect_text",
+            "target": {
+              "by": "label",
+              "value": "Remaining balance",
+              "name": ""
+            },
+            "value": "850.00",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "Locator expected to have text '850.00'\nActual value: 1550.00 \nCall log:\n  - Expect \"to_have_text\" with timeout 2000ms\n  - waiting for get_by_label(\"Remaining balance\", exact=True)\n    19 × locator resolved to <output id=\"balance\" aria-label=\"Remaining balance\">1550.00</output>\n       - unexpected value \"1550.00\"\n\nAria snapshot:\n- status \"Remaining balance\": \"1550.00\"",
+          "screenshot": "flow-0.png",
+          "steps_completed": 3,
+          "seconds": 2.77
+        },
+        {
+          "title": "Reject invalid amounts",
+          "expectation": "A negative amount displays a validation error",
+          "status": "passed",
+          "step": 3,
+          "expected": {
+            "action": "expect_text",
+            "target": {
+              "by": "role",
+              "value": "alert",
+              "name": ""
+            },
+            "value": "Enter non-negative amounts.",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-1.png",
+          "steps_completed": 3,
+          "seconds": 0.47
+        },
+        {
+          "title": "Remember after reload",
+          "expectation": "Saved income, spending, and balance survive a reload",
+          "status": "failed",
+          "step": 7,
+          "expected": {
+            "action": "expect_text",
+            "target": {
+              "by": "label",
+              "value": "Remaining balance",
+              "name": ""
+            },
+            "value": "2150.00",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "Locator expected to have text '2150.00'\nActual value: 2450.00 \nCall log:\n  - Expect \"to_have_text\" with timeout 2000ms\n  - waiting for get_by_label(\"Remaining balance\", exact=True)\n    20 × locator resolved to <output id=\"balance\" aria-label=\"Remaining balance\">2450.00</output>\n       - unexpected value \"2450.00\"\n\nAria snapshot:\n- status \"Remaining balance\": \"2450.00\"",
+          "screenshot": "flow-2.png",
+          "steps_completed": 6,
+          "seconds": 2.69
+        }
+      ],
+      "source": "real_playwright_chromium",
+      "all_passed": false
+    },
+    {
+      "id": "B2",
+      "app": "budget",
+      "kind": "fault",
+      "detected_failure": true,
+      "expected_outcome_met": true,
+      "checks": [
+        {
+          "title": "Accurate balance",
+          "expectation": "Income 1200 minus spending 350 leaves 850.00",
+          "status": "passed",
+          "step": 4,
+          "expected": {
+            "action": "expect_text",
+            "target": {
+              "by": "label",
+              "value": "Remaining balance",
+              "name": ""
+            },
+            "value": "850.00",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-0.png",
+          "steps_completed": 4,
+          "seconds": 0.81
+        },
+        {
+          "title": "Reject invalid amounts",
+          "expectation": "A negative amount displays a validation error",
+          "status": "failed",
+          "step": 3,
+          "expected": {
+            "action": "expect_text",
+            "target": {
+              "by": "role",
+              "value": "alert",
+              "name": ""
+            },
+            "value": "Enter non-negative amounts.",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "Locator expected to have text 'Enter non-negative amounts.'\nActual value:  \nCall log:\n  - Expect \"to_have_text\" with timeout 2000ms\n  - waiting for get_by_role(\"alert\")\n    20 × locator resolved to <p id=\"error\" role=\"alert\"></p>\n       - unexpected value \"\"\n\nAria snapshot:\n- main:\n  - paragraph: A SMALL TOOL FOR EVERYDAY DECISIONS\n  - heading \"Pocket Budget\" [level=1]\n  - paragraph: Plan a purchase. Keep your monthly balance in sight.\n  - text: Monthly income\n  - spinbutton \"Monthly income\": \"1000\"\n  - text: Planned spending\n  - spinbutton \"Planned spending\": \"-3\"\n  - text: Category\n  - combobox \"Category\":\n    - option \"Food\" [selected]\n    - option \"Travel\"\n  - button \"Calculate balance\"\n  - alert\n  - region \"Summary\":\n    - heading \"Remaining balance\" [level=2]\n    - status \"Remaining balance\": \"1003.00\"\n    - paragraph: Changes are saved on this device.\n  - button \"Reset budget\"\n  - text: Original LoopCheck evaluation fixture. No financial advice or external services.",
+          "screenshot": "flow-1.png",
+          "steps_completed": 2,
+          "seconds": 2.55
+        },
+        {
+          "title": "Remember after reload",
+          "expectation": "Saved income, spending, and balance survive a reload",
+          "status": "passed",
+          "step": 7,
+          "expected": {
+            "action": "expect_text",
+            "target": {
+              "by": "label",
+              "value": "Remaining balance",
+              "name": ""
+            },
+            "value": "2150.00",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-2.png",
+          "steps_completed": 7,
+          "seconds": 0.61
+        }
+      ],
+      "source": "real_playwright_chromium",
+      "all_passed": false
+    },
+    {
+      "id": "B3",
+      "app": "budget",
+      "kind": "feature",
+      "detected_failure": false,
+      "expected_outcome_met": true,
+      "checks": [
+        {
+          "title": "Accurate balance",
+          "expectation": "Income 1200 minus spending 350 leaves 850.00",
+          "status": "passed",
+          "step": 4,
+          "expected": {
+            "action": "expect_text",
+            "target": {
+              "by": "label",
+              "value": "Remaining balance",
+              "name": ""
+            },
+            "value": "850.00",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-0.png",
+          "steps_completed": 4,
+          "seconds": 0.73
+        },
+        {
+          "title": "Reject invalid amounts",
+          "expectation": "A negative amount displays a validation error",
+          "status": "passed",
+          "step": 3,
+          "expected": {
+            "action": "expect_text",
+            "target": {
+              "by": "role",
+              "value": "alert",
+              "name": ""
+            },
+            "value": "Enter non-negative amounts.",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-1.png",
+          "steps_completed": 3,
+          "seconds": 0.45
+        },
+        {
+          "title": "Remember after reload",
+          "expectation": "Saved income, spending, and balance survive a reload",
+          "status": "passed",
+          "step": 7,
+          "expected": {
+            "action": "expect_text",
+            "target": {
+              "by": "label",
+              "value": "Remaining balance",
+              "name": ""
+            },
+            "value": "2150.00",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-2.png",
+          "steps_completed": 7,
+          "seconds": 0.72
+        }
+      ],
+      "source": "real_playwright_chromium",
+      "all_passed": true
+    },
+    {
+      "id": "B4",
+      "app": "budget",
+      "kind": "cosmetic",
+      "detected_failure": false,
+      "expected_outcome_met": true,
+      "checks": [
+        {
+          "title": "Accurate balance",
+          "expectation": "Income 1200 minus spending 350 leaves 850.00",
+          "status": "passed",
+          "step": 4,
+          "expected": {
+            "action": "expect_text",
+            "target": {
+              "by": "label",
+              "value": "Remaining balance",
+              "name": ""
+            },
+            "value": "850.00",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-0.png",
+          "steps_completed": 4,
+          "seconds": 0.61
+        },
+        {
+          "title": "Reject invalid amounts",
+          "expectation": "A negative amount displays a validation error",
+          "status": "passed",
+          "step": 3,
+          "expected": {
+            "action": "expect_text",
+            "target": {
+              "by": "role",
+              "value": "alert",
+              "name": ""
+            },
+            "value": "Enter non-negative amounts.",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-1.png",
+          "steps_completed": 3,
+          "seconds": 0.5
+        },
+        {
+          "title": "Remember after reload",
+          "expectation": "Saved income, spending, and balance survive a reload",
+          "status": "passed",
+          "step": 7,
+          "expected": {
+            "action": "expect_text",
+            "target": {
+              "by": "label",
+              "value": "Remaining balance",
+              "name": ""
+            },
+            "value": "2150.00",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-2.png",
+          "steps_completed": 7,
+          "seconds": 0.59
+        }
+      ],
+      "source": "real_playwright_chromium",
+      "all_passed": true
+    },
+    {
+      "id": "R1",
+      "app": "react",
+      "kind": "fault",
+      "detected_failure": true,
+      "expected_outcome_met": true,
+      "checks": [
+        {
+          "title": "Create a named todo",
+          "expectation": "Adding Alpha displays Alpha",
+          "status": "failed",
+          "step": 3,
+          "expected": {
+            "action": "expect_text",
+            "target": {
+              "by": "text",
+              "value": "Alpha",
+              "name": ""
+            },
+            "value": "Alpha",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "Locator expected to have text 'Alpha'\nActual value: None\nError: element(s) not found \nCall log:\n  - Expect \"to_have_text\" with timeout 2000ms\n  - waiting for get_by_text(\"Alpha\", exact=True)\n\nAria snapshot:\n- heading \"todos\" [level=1]\n- textbox \"New Todo Input\":\n  - /placeholder: What needs to be done?\n- main:\n  - checkbox \"❯ Toggle All Input\"\n  - text: ❯ Toggle All Input\n  - list:\n    - listitem:\n      - checkbox\n      - text: Wrong item\n- text: 1 item left!\n- list:\n  - listitem:\n    - link \"All\":\n      - /url: \"#/\"\n  - listitem:\n    - link \"Active\":\n      - /url: \"#/active\"\n  - listitem:\n    - link \"Completed\":\n      - /url: \"#/completed\"\n- contentinfo:\n  - paragraph: Double-click to edit a todo\n  - paragraph: Created by the TodoMVC Team\n  - paragraph:\n    - text: Part of\n    - link \"TodoMVC\":\n      - /url: http://todomvc.com",
+          "screenshot": "flow-0.png",
+          "steps_completed": 2,
+          "seconds": 2.73
+        },
+        {
+          "title": "Delete the created todo",
+          "expectation": "Deleting Alpha removes it from the list",
+          "status": "inconclusive",
+          "step": 3,
+          "expected": {
+            "action": "hover",
+            "target": {
+              "by": "text",
+              "value": "Alpha",
+              "name": ""
+            },
+            "value": "",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "TimeoutError: Locator.hover: Timeout 1800ms exceeded.\nCall log:\n  - waiting for get_by_text(\"Alpha\", exact=True)\n",
+          "screenshot": "flow-1.png",
+          "steps_completed": 2,
+          "seconds": 2.23
+        }
+      ],
+      "source": "real_playwright_chromium",
+      "all_passed": false
+    },
+    {
+      "id": "R2",
+      "app": "react",
+      "kind": "fault",
+      "detected_failure": true,
+      "expected_outcome_met": true,
+      "checks": [
+        {
+          "title": "Create a named todo",
+          "expectation": "Adding Alpha displays Alpha",
+          "status": "passed",
+          "step": 3,
+          "expected": {
+            "action": "expect_text",
+            "target": {
+              "by": "text",
+              "value": "Alpha",
+              "name": ""
+            },
+            "value": "Alpha",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-0.png",
+          "steps_completed": 3,
+          "seconds": 0.77
+        },
+        {
+          "title": "Delete the created todo",
+          "expectation": "Deleting Alpha removes it from the list",
+          "status": "failed",
+          "step": 5,
+          "expected": {
+            "action": "expect_count",
+            "target": {
+              "by": "text",
+              "value": "Alpha",
+              "name": ""
+            },
+            "value": "",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "Locator expected to have count '0'\nActual value: 1 \nCall log:\n  - Expect \"to_have_count\" with timeout 2000ms\n  - waiting for get_by_text(\"Alpha\", exact=True)\n    20 × locator resolved to 1 element\n       - unexpected value \"1\"\n",
+          "screenshot": "flow-1.png",
+          "steps_completed": 4,
+          "seconds": 2.52
+        }
+      ],
+      "source": "real_playwright_chromium",
+      "all_passed": false
+    },
+    {
+      "id": "R3",
+      "app": "react",
+      "kind": "feature",
+      "detected_failure": false,
+      "expected_outcome_met": true,
+      "checks": [
+        {
+          "title": "Create a named todo",
+          "expectation": "Adding Alpha displays Alpha",
+          "status": "passed",
+          "step": 3,
+          "expected": {
+            "action": "expect_text",
+            "target": {
+              "by": "text",
+              "value": "Alpha",
+              "name": ""
+            },
+            "value": "Alpha",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-0.png",
+          "steps_completed": 3,
+          "seconds": 0.81
+        },
+        {
+          "title": "Delete the created todo",
+          "expectation": "Deleting Alpha removes it from the list",
+          "status": "passed",
+          "step": 5,
+          "expected": {
+            "action": "expect_count",
+            "target": {
+              "by": "text",
+              "value": "Alpha",
+              "name": ""
+            },
+            "value": "",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-1.png",
+          "steps_completed": 5,
+          "seconds": 0.53
+        }
+      ],
+      "source": "real_playwright_chromium",
+      "all_passed": true
+    },
+    {
+      "id": "R4",
+      "app": "react",
+      "kind": "cosmetic",
+      "detected_failure": false,
+      "expected_outcome_met": true,
+      "checks": [
+        {
+          "title": "Create a named todo",
+          "expectation": "Adding Alpha displays Alpha",
+          "status": "passed",
+          "step": 3,
+          "expected": {
+            "action": "expect_text",
+            "target": {
+              "by": "text",
+              "value": "Alpha",
+              "name": ""
+            },
+            "value": "Alpha",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-0.png",
+          "steps_completed": 3,
+          "seconds": 0.56
+        },
+        {
+          "title": "Delete the created todo",
+          "expectation": "Deleting Alpha removes it from the list",
+          "status": "passed",
+          "step": 5,
+          "expected": {
+            "action": "expect_count",
+            "target": {
+              "by": "text",
+              "value": "Alpha",
+              "name": ""
+            },
+            "value": "",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-1.png",
+          "steps_completed": 5,
+          "seconds": 0.64
+        }
+      ],
+      "source": "real_playwright_chromium",
+      "all_passed": true
+    },
+    {
+      "id": "L1",
+      "app": "loopcheck",
+      "kind": "fault",
+      "detected_failure": true,
+      "expected_outcome_met": true,
+      "checks": [
+        {
+          "title": "Switch the workspace language",
+          "expectation": "English toggles the main heading into English",
+          "status": "failed",
+          "step": 2,
+          "expected": {
+            "action": "expect_text",
+            "target": {
+              "by": "role",
+              "value": "heading",
+              "name": "Keep every change honest."
+            },
+            "value": "Keep every change honest.",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "Locator expected to have text 'Keep every change honest.'\nActual value: None\nError: element(s) not found \nCall log:\n  - Expect \"to_have_text\" with timeout 2000ms\n  - waiting for get_by_role(\"heading\", name=\"Keep every change honest.\", exact=True)\n\nAria snapshot:\n- link \"跳到工作区\":\n  - /url: \"#workspace\"\n- banner:\n  - link \"◎ LoopCheck 0.4\":\n    - /url: /\n  - navigation:\n    - link \"旧版演示\":\n      - /url: /legacy\n    - button \"English\"\n- main:\n  - paragraph: 为独立开发者留住每一次正确的改动\n  - heading \"让每次改动，都经得起验收。\" [level=1]\n  - paragraph: 连接正在开发的网页。记住你确认的要求，改完就检查，把问题证据交回你的 AI。\n  - text: 代码留在你的项目里\n  - status\n  - complementary:\n    - heading \"我的项目\" [level=2]\n    - text: \"01\"\n    - group:\n      - text: 连接本地项目 项目名称（可选）\n      - textbox \"项目名称（可选）\":\n        - /placeholder: My web app\n      - text: 项目文件夹\n      - textbox \"项目文件夹\":\n        - /placeholder: C:\\Projects\\my-app\n      - text: 已启动的预览地址\n      - textbox \"已启动的预览地址\":\n        - /placeholder: http://localhost:5173\n      - paragraph: 先在编程工具中启动网页。这里只读取前端文件变化，不安装依赖或修改源码。\n      - button \"连接项目\"\n    - button \"先试试：预算计算器 →\"\n    - heading \"一次确认，持续检查\" [level=3]\n    - list:\n      - listitem: 说清这次要改什么\n      - listitem: 确认需要守住的行为\n      - listitem: 让 AI 改码，再查看验收结果\n    - paragraph: “通过”只代表已确认的要求通过，不代表整个项目没有问题。\n  - paragraph: 当前项目\n  - heading \"连接一个项目开始\" [level=2]\n  - text: 自动复查未开启\n  - paragraph\n  - text: 这次想改什么，哪些行为必须保留？\n  - textbox \"这次想改什么，哪些行为必须保留？\":\n    - /placeho",
+          "screenshot": "flow-0.png",
+          "steps_completed": 1,
+          "seconds": 2.81
+        },
+        {
+          "title": "Start with an actionable example",
+          "expectation": "The sample connects and pre-fills a concrete change goal",
+          "status": "passed",
+          "step": 2,
+          "expected": {
+            "action": "expect_value",
+            "target": {
+              "by": "label",
+              "value": "这次想改什么，哪些行为必须保留？",
+              "name": ""
+            },
+            "value": "保留三项行为：收入 1200 减去支出 350，余额为 850.00；输入负数时显示校验错误；保存收入 2300 和支出 150 后，刷新页面仍保留数据。",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-1.png",
+          "steps_completed": 2,
+          "seconds": 0.66
+        }
+      ],
+      "source": "real_playwright_chromium",
+      "all_passed": false
+    },
+    {
+      "id": "L2",
+      "app": "loopcheck",
+      "kind": "fault",
+      "detected_failure": true,
+      "expected_outcome_met": true,
+      "checks": [
+        {
+          "title": "Switch the workspace language",
+          "expectation": "English toggles the main heading into English",
+          "status": "passed",
+          "step": 2,
+          "expected": {
+            "action": "expect_text",
+            "target": {
+              "by": "role",
+              "value": "heading",
+              "name": "Keep every change honest."
+            },
+            "value": "Keep every change honest.",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-0.png",
+          "steps_completed": 2,
+          "seconds": 0.64
+        },
+        {
+          "title": "Start with an actionable example",
+          "expectation": "The sample connects and pre-fills a concrete change goal",
+          "status": "failed",
+          "step": 2,
+          "expected": {
+            "action": "expect_value",
+            "target": {
+              "by": "label",
+              "value": "这次想改什么，哪些行为必须保留？",
+              "name": ""
+            },
+            "value": "保留三项行为：收入 1200 减去支出 350，余额为 850.00；输入负数时显示校验错误；保存收入 2300 和支出 150 后，刷新页面仍保留数据。",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "Locator expected to have Value '保留三项行为：收入 1200 减去支出 350，余额为 850.00；输入负数时显示校验错误；保存收入 2300 和支出 150 后，刷新页面仍保留数据。'\nActual value:  \nCall log:\n  - Expect \"to_have_value\" with timeout 2000ms\n  - waiting for get_by_label(\"这次想改什么，哪些行为必须保留？\", exact=True)\n    20 × locator resolved to <textarea rows=\"3\" id=\"goal\" required=\"\" maxlength=\"1200\" placeholder=\"例如：增加分类筛选，同时保留正确计算、输入校验和刷新保存功能。\"></textarea>\n       - unexpected value \"\"\n\nAria snapshot:\n- textbox \"这次想改什么，哪些行为必须保留？\":\n  - /placeholder: 例如：增加分类筛选，同时保留正确计算、输入校验和刷新保存功能。",
+          "screenshot": "flow-1.png",
+          "steps_completed": 1,
+          "seconds": 2.55
+        }
+      ],
+      "source": "real_playwright_chromium",
+      "all_passed": false
+    },
+    {
+      "id": "L3",
+      "app": "loopcheck",
+      "kind": "feature",
+      "detected_failure": false,
+      "expected_outcome_met": true,
+      "checks": [
+        {
+          "title": "Switch the workspace language",
+          "expectation": "English toggles the main heading into English",
+          "status": "passed",
+          "step": 2,
+          "expected": {
+            "action": "expect_text",
+            "target": {
+              "by": "role",
+              "value": "heading",
+              "name": "Keep every change honest."
+            },
+            "value": "Keep every change honest.",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-0.png",
+          "steps_completed": 2,
+          "seconds": 0.88
+        },
+        {
+          "title": "Start with an actionable example",
+          "expectation": "The sample connects and pre-fills a concrete change goal",
+          "status": "passed",
+          "step": 2,
+          "expected": {
+            "action": "expect_value",
+            "target": {
+              "by": "label",
+              "value": "这次想改什么，哪些行为必须保留？",
+              "name": ""
+            },
+            "value": "保留三项行为：收入 1200 减去支出 350，余额为 850.00；输入负数时显示校验错误；保存收入 2300 和支出 150 后，刷新页面仍保留数据。",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-1.png",
+          "steps_completed": 2,
+          "seconds": 0.59
+        }
+      ],
+      "source": "real_playwright_chromium",
+      "all_passed": true
+    },
+    {
+      "id": "L4",
+      "app": "loopcheck",
+      "kind": "cosmetic",
+      "detected_failure": false,
+      "expected_outcome_met": true,
+      "checks": [
+        {
+          "title": "Switch the workspace language",
+          "expectation": "English toggles the main heading into English",
+          "status": "passed",
+          "step": 2,
+          "expected": {
+            "action": "expect_text",
+            "target": {
+              "by": "role",
+              "value": "heading",
+              "name": "Keep every change honest."
+            },
+            "value": "Keep every change honest.",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-0.png",
+          "steps_completed": 2,
+          "seconds": 0.8
+        },
+        {
+          "title": "Start with an actionable example",
+          "expectation": "The sample connects and pre-fills a concrete change goal",
+          "status": "passed",
+          "step": 2,
+          "expected": {
+            "action": "expect_value",
+            "target": {
+              "by": "label",
+              "value": "这次想改什么，哪些行为必须保留？",
+              "name": ""
+            },
+            "value": "保留三项行为：收入 1200 减去支出 350，余额为 850.00；输入负数时显示校验错误；保存收入 2300 和支出 150 后，刷新页面仍保留数据。",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-1.png",
+          "steps_completed": 2,
+          "seconds": 0.64
+        }
+      ],
+      "source": "real_playwright_chromium",
+      "all_passed": true
+    }
+  ],
+  "expected_outcomes_met": 12,
+  "case_count": 12,
+  "false_green_faults": 0,
+  "false_alarms": 0,
+  "model_calls": 0,
+  "human_efficiency": "NOT MEASURED. Automated duration is not human time saved."
+}

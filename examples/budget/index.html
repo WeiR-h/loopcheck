@@ -1,0 +1,10 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pocket Budget</title><link rel="stylesheet" href="style.css">
+<main><p class="eyebrow">A SMALL TOOL FOR EVERYDAY DECISIONS</p><h1>Pocket Budget</h1><p>Plan a purchase. Keep your monthly balance in sight.</p>
+<form id="budget"><label for="income">Monthly income</label><input id="income" type="number" value="1000" step="any">
+<label for="expense">Planned spending</label><input id="expense" type="number" value="200" step="any">
+<label for="category">Category</label><select id="category"><option value="food">Food</option><option value="travel">Travel</option></select>
+<button type="submit">Calculate balance</button></form><p role="alert" id="error"></p>
+<section aria-label="Summary"><h2>Remaining balance</h2><output aria-label="Remaining balance" id="balance">800.00</output><p id="saved">Changes are saved on this device.</p></section>
+<button type="button" id="reset">Reset budget</button><footer>Original LoopCheck evaluation fixture. No financial advice or external services.</footer></main>
+<script src="app.js"></script></html>

@@ -1,0 +1,21 @@
+services:
+  loopcheck:
+    build: .
+    ports:
+      - "127.0.0.1:8791:8765"
+    env_file: .env
+    environment:
+      APP_PUBLIC: "true"
+      LOOPCHECK_DATA: /app/data
+      MODEL_BUDGET_CNY: ${MODEL_BUDGET_CNY:-20}
+    volumes:
+      - loopcheck-data:/app/data
+    init: true
+    shm_size: 256mb
+    mem_limit: 1g
+    cpus: 2
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+volumes:
+  loopcheck-data:

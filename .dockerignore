@@ -1,0 +1,11 @@
+.env
+.env.*
+.venv
+.git
+__pycache__
+*.py[cod]
+data
+*.log
+.browsers
+.test-data
+dist

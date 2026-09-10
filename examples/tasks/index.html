@@ -1,0 +1,5 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>小日常 · 任务清单</title><link rel="stylesheet" href="./style.css"></head><body>
+<main><div class="eyebrow">LOOPCHECK / 原创测试示例</div><h1>把今天，安排好。</h1><p class="subtitle">一个小任务，一点小进展。</p>
+<form id="task-form"><label class="sr-only" for="task-input">新任务</label><input id="task-input" data-testid="new-task" placeholder="下一件想完成的事…" maxlength="160" autocomplete="off"><button data-testid="add-task" type="submit">＋ 添加</button></form>
+<div class="list-head"><span>我的待办</span><span id="task-count" data-testid="task-count">0 项</span></div>
+<ul id="task-list" data-testid="task-list"></ul><p id="empty">还没有任务，写下第一件小事吧。</p><footer>示例数据仅保存在本次隔离浏览器中</footer></main><script src="./app.js"></script></body></html>

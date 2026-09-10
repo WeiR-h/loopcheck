@@ -1,0 +1,37 @@
+[
+  {
+    "image": "04-iteration-workspace.png",
+    "title": "Fix it once. Keep it fixed.",
+    "narration": "LoopCheck helps solo builders who use AI to create small web apps. Generating code is only part of the job. Builders still repeat bug reports and manually check whether the next edit broke an earlier fix. LoopCheck turns that repeated verification into a reusable workflow. These are actual screenshots of the working prototype, shown as a narrated walkthrough."
+  },
+  {
+    "image": "06-verification.png",
+    "title": "Real browser checks decide whether a patch passes.",
+    "narration": "Start by selecting one of three disclosed original scenarios and loading it. Describe the behavior you expect, then ask for repair. A real Strands agent reads the source, reproduces the problem, records an executable requirement, and edits a copy. This completion-state repair passed all eight browser checks. Passing is determined independently by Chromium, not by the language model claiming success."
+  },
+  {
+    "image": "07-browser-evidence.png",
+    "title": "Inspect observed behavior before deciding.",
+    "narration": "The evidence view compares actual browser screenshots before and after the patch. Here, the completion checkbox stays unchecked in the broken version and becomes checked in the repaired version. You can select a different behavior to inspect. The checks also preserve deletion and persistence. These examples have deliberately seeded bugs; the model produces the repair at runtime."
+  },
+  {
+    "image": "08-patch.png",
+    "title": "A minimal patch. Your approval.",
+    "narration": "The code changes tab shows the exact patch. In this run, the model corrected the reversed checkbox state with a one-line change. Nothing is silently adopted. The builder reviews the passing checks and chooses whether to keep the patch. If the underlying version has changed, the old patch cannot overwrite it. Original versions remain available for recovery."
+  },
+  {
+    "image": "09-saved-requirements.png",
+    "title": "Remember the behavior, not another chat thread.",
+    "narration": "Adoption also saves the behavioral requirement. It is an executable sequence of actions and assertions, not just a paragraph in chat history. You can replay these checks on later versions. The current prototype includes duplicate deletion, persistence, and completion examples. It accepts compatible app dot J S files using this original task-list page structure."
+  },
+  {
+    "image": "10-guard.png",
+    "title": "Keep working while the server keeps watch.",
+    "narration": "Keep watch monitors a dedicated project file. When its content changes, the server replays saved checks. With automatic repair enabled, a failed check can trigger a real model repair without another bug report. In our live test, the agent caught a repeated deletion regression while the user viewed Versions, and prepared a passing patch for review. Closing the browser tab does not stop the watcher, but the application server must remain running."
+  },
+  {
+    "image": "11-history.png",
+    "title": "Evidence includes failures and costs.",
+    "narration": "Four live repairs succeeded across three small scenarios and one repeated regression. Fourteen separate automated tests also passed. The first live model attempt failed, and its record remains visible. All twenty-eight model requests together were estimated at less than two hundredths of a Chinese yuan from returned usage. We do not claim a general success rate or a measured percentage of human time saved. LoopCheck makes the next change easier to verify, while keeping the builder in control."
+  }
+]

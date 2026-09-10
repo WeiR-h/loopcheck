@@ -1,0 +1,49 @@
+name: Verify LoopCheck
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.browsers
+      OTEL_SDK_DISABLED: 'true'
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install dependencies and Chromium
+        run: |
+          python -m pip install -r requirements.txt
+          python -m playwright install --with-deps --only-shell chromium
+      - name: Unit and real browser tests (no provider calls)
+        run: |
+          set -o pipefail
+          mkdir -p .test-data
+          python -m unittest discover -s tests -v 2>&1 | tee .test-data/ci-tests.log
+          node --check web/projects.js
+      - name: Original budget regression gate
+        run: python scripts/project_gate.py
+      - name: Frozen three-project benchmark
+        run: |
+          python run.py > .test-data/ci-server.log 2>&1 &
+          curl --retry 15 --retry-connrefused --retry-delay 1 --fail http://127.0.0.1:8791/health
+          python scripts/evaluate_projects.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: automatic-verification
+          path: |
+            .test-data/ci-tests.log
+            .test-data/ci-server.log
+            docs/evidence/v04-benchmark.json
+            docs/evidence/v04-frozen-cases.json
+          retention-days: 30

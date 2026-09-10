@@ -1,0 +1,111 @@
+{
+  "date": "2026-09-09",
+  "provider": "Alibaba Cloud Model Studio Beijing",
+  "model": "qwen3.7-flash",
+  "disclosure": "Three seeded original scenarios; four live successes including one repeated regression. Initial failure retained. Not a success-rate benchmark.",
+  "runs": [
+    {
+      "id": "eed2aa85fff144d69bedb282ef6f0a85",
+      "trigger": null,
+      "state": "error",
+      "seconds": 35.41,
+      "before_failed": [
+        "duplicate_identity",
+        "mixed_order"
+      ],
+      "after_passed": null,
+      "after_total": null,
+      "usage": {
+        "calls": 8,
+        "reported_cny": 0.0042876,
+        "unknown_reserved_cny": 0,
+        "input_tokens": 18954,
+        "output_tokens": 621
+      }
+    },
+    {
+      "id": "04853afc5adb4399af3299f140cec01a",
+      "trigger": null,
+      "state": "adopted",
+      "seconds": 33.13,
+      "before_failed": [
+        "duplicate_identity",
+        "mixed_order"
+      ],
+      "after_passed": 5,
+      "after_total": 5,
+      "usage": {
+        "calls": 5,
+        "reported_cny": 0.0029278000000000004,
+        "unknown_reserved_cny": 0,
+        "input_tokens": 12855,
+        "output_tokens": 446
+      }
+    },
+    {
+      "id": "52e19b4b3e71459a885a189a2146ba10",
+      "trigger": "guard_repair",
+      "state": "adopted",
+      "seconds": 37.11,
+      "before_failed": [
+        "duplicate_identity",
+        "mixed_order",
+        "requirement_0"
+      ],
+      "after_passed": 6,
+      "after_total": 6,
+      "usage": {
+        "calls": 5,
+        "reported_cny": 0.0031036,
+        "unknown_reserved_cny": 0,
+        "input_tokens": 13582,
+        "output_tokens": 484
+      }
+    },
+    {
+      "id": "a3719fbefad94e49aafdc8e0e8e8ae90",
+      "trigger": "manual",
+      "state": "adopted",
+      "seconds": 25.87,
+      "before_failed": [
+        "persistence"
+      ],
+      "after_passed": 7,
+      "after_total": 7,
+      "usage": {
+        "calls": 5,
+        "reported_cny": 0.0031524000000000005,
+        "unknown_reserved_cny": 0,
+        "input_tokens": 13994,
+        "output_tokens": 442
+      }
+    },
+    {
+      "id": "c8cb50e9af184d1e9af0839d92f15feb",
+      "trigger": "manual",
+      "state": "adopted",
+      "seconds": 37.14,
+      "before_failed": [
+        "add_toggle",
+        "persistence",
+        "requirement_2"
+      ],
+      "after_passed": 8,
+      "after_total": 8,
+      "usage": {
+        "calls": 5,
+        "reported_cny": 0.003245,
+        "unknown_reserved_cny": 0,
+        "input_tokens": 14345,
+        "output_tokens": 470
+      }
+    }
+  ],
+  "budget": {
+    "calls": 28,
+    "reported_cny": 0.0167164,
+    "unknown_reserved_cny": 0,
+    "input_tokens": 73730,
+    "output_tokens": 2463
+  }
+}

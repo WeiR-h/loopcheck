@@ -1,0 +1,37 @@
+[
+  {
+    "image": "docs/audit-v04/02-passed-desktop.png",
+    "title": "LoopCheck 0.4 | Evidence walkthrough - edited, not continuous",
+    "narration": "LoopCheck helps solo builders keep their web app requirements intact while an AI changes the code. Connect your project and its running preview. Describe what must keep working. This evidence walkthrough combines actual interface screenshots and recorded browser checks. It is edited, not a continuous desktop recording."
+  },
+  {
+    "video": "docs/video/v04-before.webm",
+    "title": "Actual Chromium baseline | final frame held for explanation",
+    "narration": "Here is a real browser flow against our original budget calculator. Income twelve hundred minus spending three hundred and fifty must produce eight hundred and fifty. Separate flows check invalid negative inputs and saved values after a reload. Each flow starts in a clean browser context."
+  },
+  {
+    "image": "docs/audit-v04/02-passed-desktop.png",
+    "title": "Strands plans. The builder approves. Chromium verifies.",
+    "narration": "A live Strands agent observed the page and proposed these checks. An early proposal had an incorrect input assumption and was not approved. We added element metadata and trial execution before review. Approval preserves the contract. Passing execution does not replace reviewing whether the proposed checks match your intent."
+  },
+  {
+    "video": "docs/video/v04-regression.webm",
+    "title": "Disclosed injected arithmetic fault | same assertion, real browser",
+    "narration": "We deliberately changed subtraction to addition in a temporary copy. This is a disclosed injected fault, not a claim about a naturally occurring AI mistake. The same browser assertion now observes fifteen hundred and fifty instead of eight hundred and fifty, and fails."
+  },
+  {
+    "image": "docs/audit-v04/01-regression-desktop.png",
+    "title": "Actual failed result | return expected, observed, and screenshot evidence",
+    "narration": "The actual application also completed this failure through a real standard input and output MCP client. The coding assistant received the failed step, expected and observed values, changed file name, and screenshot evidence. It repaired the original source and called the same check again. The evidence records include those run identifiers."
+  },
+  {
+    "video": "docs/video/v04-after.webm",
+    "title": "Source restored | requirement unchanged | final frame held",
+    "narration": "After restoration, the unchanged calculation assertion passes. Routine rechecks do not call the model. Results are tied to source and requirement versions. If code changes during a check, the old result is stale and the latest version is rechecked. The bridge cannot approve or silently weaken requirements."
+  },
+  {
+    "image": "docs/audit-v04/02-passed-desktop.png",
+    "title": "12 frozen changes, 3 apps | no human time-saved claim",
+    "narration": "Our frozen evaluation covers the budget calculator, a pinned public React TodoMVC example, and LoopCheck itself. All six injected faults were detected and all six normal changes passed. These are small developer-authored cases, not an unknown-project success rate. Human efficiency is not measured. Public hosting and the final continuous recording remain release steps."
+  }
+]

@@ -1,0 +1,92 @@
+{
+  "version": "0.4.0",
+  "date": "2026-09-09",
+  "automated_suite": {
+    "passed": 25,
+    "seconds": 92.667,
+    "command": "python -m unittest discover -s tests -v",
+    "test_storage": "temporary directory, isolated from running app",
+    "provider_tests": "scripted responses; live model evidence is separate"
+  },
+  "benchmark": {
+    "expected": 12,
+    "met": 12,
+    "faults": 6,
+    "false_green_faults": 0,
+    "false_alarms": 0,
+    "manifest_sha256": "f6c9c71eec235c1e65c34154b5053854abc429ff90cb939d8bfe64fffc8a7c6c"
+  },
+  "concurrent_live_mcp": {
+    "run_id": "f88a8d3d62e94ba986e5d920ab608ad7",
+    "state": "passed",
+    "flows": 3,
+    "seconds": 5.56,
+    "model_calls": 0,
+    "ran_during_final_test_suite": true
+  },
+  "codex_registration": {
+    "registered_in_local_config": true,
+    "existing_servers_preserved": true,
+    "current_conversation_hot_load_verified": false,
+    "next_step": "Refresh MCP servers or reopen Codex"
+  },
+  "checks": {
+    "python_dependency_consistency": "passed",
+    "python_compile": "passed",
+    "javascript_syntax": "passed",
+    "desktop_ui": "passed at 1280x900",
+    "mobile_ui": "not verified: browser viewport override did not take effect",
+    "full_accessibility_audit": "not performed",
+    "docker_build": "not verified: Docker daemon unavailable",
+    "public_deployment": "not performed: AWS credentials unavailable",
+    "public_source": "not published: GitHub authentication unavailable",
+    "source_archive_boot": {
+      "archive_boot": "passed",
+      "version": "0.4.0",
+      "mode": "public sample-only",
+      "key_configured": false,
+      "no_model_calls": true,
+      "dependencies": "Reused existing verified Python environment; not a fresh dependency installation",
+      "docker": "not tested; daemon unavailable"
+    }
+  },
+  "failures_preserved": [
+    {
+      "item": "legacy guard completion race",
+      "observed": "22-test rerun: guard expected ready, read prior issues_found",
+      "resolution": "Publish terminal result after releasing operation slot; final suite passed"
+    },
+    {
+      "item": "stale follow-up publication race",
+      "observed": "New stale-result test initially observed no followup_id",
+      "resolution": "Create follow-up before publishing terminal original result; final test passed"
+    },
+    {
+      "item": "test application used live data root",
+      "observed": "Concurrent MCP run a275bd80b19d485496ba0651f07d31fe briefly returned interrupted when tests imported the application",
+      "resolution": "All test modules initialize temporary storage before importing application modules; concurrent final MCP check passed"
+    },
+    {
+      "item": "speech synthesis unavailable",
+      "observed": "Microsoft Zira initialization failed",
+      "resolution": "Reproducible silent video with English captions; no synthesized narration claimed"
+    }
+  ],
+  "human_efficiency": "NOT MEASURED. No human time-saving percentage claimed.",
+  "video": {
+    "duration_seconds": 127.0,
+    "format": "1920x1080 H.264/AAC",
+    "source": "Actual v0.4 UI screenshots plus recorded Chromium budget flows; silent audio track; English captions",
+    "disclosure": "Edited evidence walkthrough, not a continuous desktop recording; real browser clips hold their last frame during explanation; faults deliberately injected",
+    "bytes": 1584563,
+    "visually_reviewed_frames_seconds": [
+      28,
+      72
+    ],
+    "clips": {
+      "v04-after.webm": "f77bf65a9eee32e2ae8abe373efeb68eb2ce26c44ab39d0096bdc36b2d3ee6b6",
+      "v04-before.webm": "63eb6f758c4ab104ba3359c7dd6af15a370d89d6069ff969785b68aa6b8b34ac",
+      "v04-regression.webm": "0f8dee7bdeccede7c3b10a96b7e575f25a6ff612e71915a99b27c3e76549e0d4"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "health": {
+    "status": "ok",
+    "version": "0.3.0"
+  },
+  "platform": "Linux Docker / python:3.12-slim",
+  "browser_checks": {
+    "total": 4,
+    "passed": 2,
+    "expected_failures": 2
+  },
+  "model_requests": 0,
+  "zip_license": "present",
+  "non_root_uid": 10001
+}

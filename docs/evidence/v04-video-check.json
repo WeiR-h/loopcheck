@@ -1,0 +1,16 @@
+{
+  "duration_seconds": 127.0,
+  "format": "1920x1080 H.264/AAC",
+  "source": "Actual v0.4 UI screenshots plus recorded Chromium budget flows; silent audio track; English captions",
+  "disclosure": "Edited evidence walkthrough, not a continuous desktop recording; real browser clips hold their last frame during explanation; faults deliberately injected",
+  "bytes": 1584563,
+  "visually_reviewed_frames_seconds": [
+    28,
+    72
+  ],
+  "clips": {
+    "v04-after.webm": "f77bf65a9eee32e2ae8abe373efeb68eb2ce26c44ab39d0096bdc36b2d3ee6b6",
+    "v04-before.webm": "63eb6f758c4ab104ba3359c7dd6af15a370d89d6069ff969785b68aa6b8b34ac",
+    "v04-regression.webm": "0f8dee7bdeccede7c3b10a96b7e575f25a6ff612e71915a99b27c3e76549e0d4"
+  }
+}
