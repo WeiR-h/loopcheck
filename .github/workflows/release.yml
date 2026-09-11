@@ -1,0 +1,42 @@
+name: Publish verified LoopCheck release
+on:
+  workflow_run:
+    workflows: [Verify LoopCheck]
+    types: [completed]
+permissions:
+  contents: read
+jobs:
+  release:
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_branch == 'main' &&
+      github.event.workflow_run.head_repository.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build source-only package from the verified commit
+        run: |
+          python -m pip install python-dotenv==1.2.3
+          python scripts/package_release.py
+      - name: Publish immutable 0.5.0 assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERIFIED_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          if gh release view v0.5.0 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Version 0.5.0 already exists; preserving its assets."
+            exit 0
+          fi
+          gh release create v0.5.0 dist/loopcheck-v0.5.0-source.zip dist/SHA256SUMS.txt \
+            --repo "$GITHUB_REPOSITORY" --target "$VERIFIED_SHA" \
+            --title "LoopCheck 0.5.0 — Versioned requirements" \
+            --notes-file docs/RELEASE-0.5.en.md --latest
