@@ -1,0 +1,22 @@
+[
+  {
+    "title": "Baseline: preserved cart behavior",
+    "narration": "Real Chromium execution verifies quantity, totals and persistence. These requirements are defined by the test harness. No model call is used for replay.",
+    "video": "docs/video/v05-cart-0.webm"
+  },
+  {
+    "title": "Future requirement: incomplete coverage",
+    "narration": "The coupon control does not exist yet. Its business requirement has already been saved. All three old checks pass, but the overall result is incomplete. This clip shows the unchanged application. The incomplete result is recorded in the accompanying evidence report.",
+    "video": "docs/video/v05-cart-1.webm"
+  },
+  {
+    "title": "Injected regression: evidence for repair",
+    "narration": "The script implements SAVE10 and deliberately changes the original unit price from one hundred to one hundred fifty. The old total check now fails: quantity two must cost two hundred, but the page shows three hundred. Complete actions, expected and actual results, screenshots and versions are available through the MCP result.",
+    "video": "docs/video/v05-cart-2.webm"
+  },
+  {
+    "title": "Repair and recheck",
+    "narration": "The script restores the original unit price while keeping the coupon feature. All four checks now pass. Here the real browser applies SAVE10 to quantity two and verifies one hundred eighty. This is an edited automated validation walkthrough, with cuts between runs. It is not a continuous human or autonomous coding-agent session.",
+    "video": "docs/video/v05-cart-3.webm"
+  }
+]

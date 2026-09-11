@@ -141,7 +141,7 @@ def legacy():
 
 @app.get('/health')
 def health():
-    return {'status': 'ok', 'version': '0.4.0'}
+    return {'status': 'ok', 'version': '0.5.0'}
 
 
 @app.get('/api/state')
@@ -309,4 +309,5 @@ def download_version(version_id: str, request: Request):
 app.include_router(project_router(projects))
 app.mount('/static', StaticFiles(directory=ROOT / 'web'), name='static')
 app.mount('/samples/budget', StaticFiles(directory=ROOT / 'examples' / 'budget', html=True), name='budget-demo')
+app.mount('/samples/cart', StaticFiles(directory=ROOT / 'examples' / 'cart', html=True), name='cart-demo')
 app.mount('/demo', StaticFiles(directory=FIXTURES, html=True), name='original-demo')

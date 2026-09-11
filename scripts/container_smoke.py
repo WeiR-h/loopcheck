@@ -34,7 +34,7 @@ def main():
             except (OSError,ValueError):pass
             time.sleep(.5)
         else:raise AssertionError('Container did not become healthy')
-        assert health['version']=='0.4.0'
+        assert health['version']=='0.5.0'
         _,state=request('/api/projects');assert state['public'] and not state['model']['configured']
         assert request('/api/projects',{'root':'/app','url':'http://127.0.0.1:8765/'})[0]==409
         assert request('/api/versions',{'expected_version':'test','action':'import','code':'alert(1)'})[0]==403
@@ -52,13 +52,13 @@ def main():
         peak=int(docker('exec',NAME,'cat','/sys/fs/cgroup/memory.peak').strip())
         inspect=json.loads(docker('inspect',NAME))[0]
         assert not inspect['State']['OOMKilled']
-        report={'version':'0.4.0','status':'passed','scope':'Fresh Linux Docker build, public-mode boundaries, three real browser flows across baseline/injected-fault/restoration',
+        report={'version':'0.5.0','status':'passed','scope':'Fresh Linux Docker build, public-mode boundaries, three real browser flows across baseline/injected-fault/restoration',
                 'memory_limit_mib':768,'peak_memory_mib':round(peak/1024/1024,2),'oom_killed':False,'model_calls':0,
                 'baseline':baseline,'injected_fault':failure,'restored':repaired,
                 'limitation':'Container memory measurement on a CI host; not an AWS 1 GB instance or a live-provider load test.'}
         print(json.dumps({k:v for k,v in report.items() if k not in {'baseline','injected_fault','restored'}}))
     finally:
-        (ROOT/'docs/evidence/v04-container-check.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
+        (ROOT/'docs/evidence/v05-container-check.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
         docker('rm','-f',NAME)
 
 if __name__=='__main__':main()

@@ -1,64 +1,52 @@
-# LoopCheck 0.4
+# LoopCheck 0.5.0
 
 **Keep every change honest.** [中文](README.md)
 
-[![Verify LoopCheck](https://github.com/WeiR-h/loopcheck/actions/workflows/verify.yml/badge.svg)](https://github.com/WeiR-h/loopcheck/actions/workflows/verify.yml)
+An acceptance companion for solo builders working with AI on small web apps. Save the business behavior you want before a feature exists. Review browser checks when it is implemented, replay preserved requirements after every edit, and give your coding AI complete regression evidence.
 
-LoopCheck is an acceptance companion for solo builders using AI to develop small web apps. Connect a running local project, describe the change and behaviors to preserve, review the Strands agent's proposed requirements, and replay them after source changes. Failed checks return reproducible evidence to your existing coding AI through MCP. LoopCheck does not edit source in this workflow.
+## Start locally
 
-## Try it
+Use Python 3.12+. On Windows run `install.ps1`, keep your existing `.env`, then run `启动应用.cmd`. Open http://127.0.0.1:8791/ (`/judge` opens English). Configure `DASHSCOPE_API_KEY`, provider `dashscope`, model `qwen3.7-flash` and `MODEL_BUDGET_CNY=20` in `.env`. Never put the key in frontend files. Total authorized project budget remains CNY 100.
 
-Use Python 3.12 or newer. Windows: run `install.ps1`, preserve your existing `.env`, then run `启动应用.cmd`. Open http://127.0.0.1:8791/ or `/judge` for English. Model configuration stays in `.env`: `DASHSCOPE_API_KEY`, provider `dashscope`, model `qwen3.7-flash`, budget `MODEL_BUDGET_CNY=20`. No key is sent to the frontend or browser worker.
+Connect a trusted project folder and its already running loopback HTTP preview with an explicit port. LoopCheck hashes supported frontend files locally; it does not install dependencies, run arbitrary project commands, upload source or edit the original project. Docker/public mode only exposes bundled examples.
 
-For your own frontend, start its preview in your usual coding tool, then enter its project folder and a loopback HTTP URL with a port, such as `http://localhost:5173/`. LoopCheck does not install dependencies or launch arbitrary project commands. Native startup is the supported local-project path; Docker is the sample-only review deployment.
+## Daily workflow
 
-For a first session, select **Try it first: Pocket Budget**, then **Prepare acceptance checks**. Review every proposed step and expected result. Select **Approve & check current version**. The model can make mistakes: the initial planning failure is retained in our evidence. Approval is a human decision, never an MCP tool.
+1. Select Pocket Budget or Everyday Cart, or connect your own running preview.
+2. Describe the change and behaviors to preserve. **Prepare requirements** uses Strands to propose business intentions. Review the original goal, edit or add items, then confirm.
+3. Missing checks remain **uncovered**. Future controls do not need to exist to save their requirement. Use **Generate missing checks** to observe the current page and propose executable steps; review and confirm again.
+4. Have your coding AI implement the change. **Check this change** runs confirmed flows without a model call. Uncovered requirements keep the result incomplete even when all old checks pass.
+5. Copy failure evidence or read it through MCP. Fix source and recheck. Edit, retire with a reason, restore or rebuild checks through reviewed drafts. Retired requirements never count as passing.
 
-After approval, **Check this change** replays requirements without a model request. **Enable auto-check** watches the original frontend files while the server is running. A stop request also pauses watching. A changed source revision invalidates an in-flight result and triggers up to two bounded checks of the latest version.
+A changed requirement creates a new revision and cannot inherit its previous passing result. Unchanged flows remain available. Historical results are labeled with time and versions. Only a nonempty, fully covered, passing current scope has `can_accept=true`.
 
-## Use it with your coding AI
+## Coding AI integration
 
-Select **Connect my coding AI** for a local configuration. Codex uses the generated TOML section in its MCP settings; other clients can use the displayed command and arguments. The credential file is stored under ignored `data/app/bridges/`; never publish it.
+Use **Connect my coding AI** to obtain local stdio configuration. Keep credential files private. Three tools remain: `prepare_change(goal, language, stage='intent', requirement_ids=[])`, `check_change()` and `get_result(run_id, wait_seconds=0)`. Use `stage='bind'` after implementing approved uncovered requirements. MCP cannot approve or weaken expectations. It returns coverage, currentness, complete prerequisites/actions, failed step, expected/actual values, screenshot paths and related changed files (not asserted root causes). It cannot wake a closed client. [Details](docs/MCP.md).
 
-The stdio tools are `prepare_change(goal, language)`, `check_change()`, and `get_result(run_id, wait_seconds)`. The last tool returns expected/actual browser evidence and a repair brief. Tools never approve requirements, install dependencies, or edit source. They cannot wake a closed coding tool. See [MCP integration](docs/MCP.md).
+## Evidence and limits
 
-## Verified evidence and limits
+[0.5 verification](docs/验证记录-v05.md) records all failed attempts. Twelve frozen artificial mutations met expected outcomes: six faults detected, six normal changes passed. A real shopping-cart development gate demonstrated passed → incomplete → regression → passed. These developer-defined tests are separate from agent planning.
 
-- 25 automated tests passed on Windows in 92.667 seconds; see [verification](docs/验证记录-v04.md) for the final check record.
-- Three different frontends: original Pocket Budget, pinned public TodoMVC React, and LoopCheck's frontend using its real backend through a local test proxy.
-- 12 frozen, disclosed mutation cases: six faults detected; six normal feature/cosmetic changes passed. Zero false-green faults and zero false alarms in this small controlled set. These are not naturally occurring defects or a general success-rate estimate.
-- A live Strands/Qwen proposal was reviewed and browser-checked. An actual stdio MCP sequence produced **passed → failed → passed** after the development agent changed the original sample source using the returned evidence.
-- **No human-efficiency percentage is claimed.** Automated durations are not human time saved. The user deferred the human timing study.
+Live Strands/Qwen planning was tested on four frozen goals in two pinned MDN CC0 examples. All five rounds are retained: 0/4, 1/4, 2/4, 0/4, then 4/4 passing goals. The latest round covers item addition and deletion plus dialog cancellation and selection/confirmation. The full 35-test suite also passes. Short requirement references, compact step submissions and evidence-based locator correction reduce avoidable planning failures; retries preserve assertion types and expected values. This is a small debugging evaluation, not a production success rate. Human review remains essential. No human time-saving percentage or external user study is claimed.
 
-[Benchmark](docs/evidence/v04-benchmark.json) · [Frozen cases](docs/evidence/v04-frozen-cases.json) · [Live evidence](docs/evidence/v04-live.json) · [Architecture](docs/architecture.md)
+Limits: 10 active requirements and 10 flows per project, 20 steps per flow; retired records do not consume active quota. Exploration permits three observations and six replayed actions per path. Each observation/flow starts fresh; network stays on the selected origin. Missing/ambiguous elements, blocked dependencies, interruption, empty scopes and stale results cannot approve a change. Frontend tracking excludes secrets, hidden folders, dependencies and build outputs; maximum 2000 files/20 MB, 1 MB each. This is not a hostile repository sandbox, login/payment tester or backend verification platform.
 
-## Scope and safeguards
+## Upgrade and verify
 
-Supports small loopback HTTP frontends with native form controls and accessible DOM. HTML/JavaScript and React can be checked through the browser; no framework-specific test IDs are required. Existing test IDs are supported when present. Hover is supported for controls revealed on pointer interaction.
-
-Limits: 10 projects per session, 10 flows per project, 20 steps per flow, 2000 frontend source files / 20 MB per connected folder, 1 MB per source file, 120-second browser deadline plus at most 120 seconds waiting for the shared browser slot. `.env`, hidden folders, dependency/build directories, links out of the selected folder, and backend files are excluded from source-change tracking. Source content is hashed locally; the planner receives live page observations and the stated goal, not the repository.
-
-Each flow starts in a fresh browser context. Service workers and cross-origin requests are blocked; same-origin preview WebSockets are allowed for development previews. Missing elements, blocked dependencies, unavailable previews, cancellation, and stale revisions cannot approve a change. The local project itself must be trusted; this is not a hostile repository sandbox or production-site testing service.
-
-Confirmed flow specifications remain immutable. New drafts append to them within the limit; semantic editing/removal of existing contracts is not yet supported. A future release will add explicit user-reviewed contract replacement. The `/legacy` route retains the v0.3 demo and its historical data.
-
-## Tests
+Read [upgrade and rollback](docs/UPGRADE-0.5.md). Startup backs up legacy SQLite before converting flow-only contracts. Old evidence and budget records remain; fresh checks establish current evidence.
 
 ```sh
 python -m unittest discover -s tests -v
-python scripts/project_gate.py
-# Start LoopCheck on port 8791 before the cross-project benchmark:
+python scripts/cart_gate_v05.py
+# Start run.py on port 8791 first:
 python scripts/evaluate_projects.py
 ```
 
-The benchmark downloads only the pinned TodoMVC test fixture if absent. It mutates temporary copies and preserves the original applications. `tests/project_fixtures.py` contains developer-defined (AI-assisted) test contracts, not hidden runtime repairs.
+Tests use isolated storage. The live-model evaluation script freezes artifacts before calling the configured provider and refuses to overwrite an existing evaluation. Model evaluation costs money; ordinary rechecks do not.
 
-## Budget and submission
+## Publication
 
-The existing Qwen3.7 Flash Beijing endpoint and persistent SQLite cost reservations remain in place. Model budget: CNY 20; total authorized project budget: CNY 100. No fallback to a different paid model. Public hosting must use persistent storage and provide model access without requiring judges to buy a key. No paid AWS resource has been provisioned by this release.
+[Public repository](https://github.com/WeiR-h/loopcheck). Previous 0.4 release and Linux CI are historical evidence, not confirmation of 0.5 cloud deployment. AWS hosting, publicly hosted video and final Devpost submission remain independent pending steps. AgentCore is not deployed. [Architecture](docs/architecture.md) · [Submission draft](docs/SUBMISSION.en.md) · [Delivery status](docs/验证记录-v05.md).
 
-A 127-second captioned evidence walkthrough is included in the release artifacts. It combines real browser clips and UI stills with editing explicitly disclosed; it is not a continuous desktop recording. Fresh Linux Docker build and real browser checks passed; see [container evidence](docs/evidence/v04-container-check.json).
-
-Public source: [https://github.com/WeiR-h/loopcheck](https://github.com/WeiR-h/loopcheck). [Linux CI](https://github.com/WeiR-h/loopcheck/actions/runs/34462275115) passed 25 tests, all 12 frozen mutation cases and a fresh Docker browser gate. At a 768 MiB container memory limit, peak usage was 324.27 MiB with no OOM. This CI gate used no model calls and is not an AWS instance capacity test. Hosted judging access, YouTube/Vimeo publication and Devpost submission remain pending. AgentCore is not deployed. [Publication evidence](docs/evidence/v04-publication.json).
-
-MIT. Original app and Pocket Budget created with AI coding assistance. TodoMVC is an external evaluation fixture pinned to `ff43b02e59dfa604386bb382034b2cd07c2bcd8a`; its MIT license and bundled notices remain with the downloaded fixture. [Upstream](https://github.com/tastejs/todomvc). Libraries retain their licenses.
+MIT for LoopCheck and original examples, created with AI coding assistance. MDN fixtures are pinned and distributed unchanged with CC0 licenses and source notices under `examples/public`. TodoMVC React benchmark fixture retains its upstream MIT license and pinned provenance.

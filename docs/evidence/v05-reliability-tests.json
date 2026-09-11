@@ -1,0 +1,15 @@
+{
+  "version": "0.5.0",
+  "tests": 35,
+  "passed": 35,
+  "seconds": 186.754,
+  "isolated_data": true,
+  "test_log_sha256": "fa2acf9f6828305aac6c788e6bf88eacb7e8fe7beec354fd76c2c289828423aa",
+  "command": "python -m unittest discover -s tests -v",
+  "files": {
+    "coach\\requirements.py": "31199dea568a5dadbd63e4ec13c26f0fd876ad1681310a85297d64f9f5daf63c",
+    "coach\\project_checks.py": "7d5d46fbc0df6f3e2567828bb941d4a56adeedeb98ef5838a79cb02b13118e27",
+    "coach\\project_browser.py": "35e27e93ad79563844762266165090953ac53d49a89661bce26211c3ed6e4b13",
+    "tests\\test_requirements_v05.py": "9fd52bc633949cddbb61f6a50b29421a59282b45ea5b625428b92537bdc83a5a"
+  }
+}

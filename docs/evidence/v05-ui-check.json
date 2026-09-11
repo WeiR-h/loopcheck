@@ -1,0 +1,12 @@
+{
+  "version": "0.5.0",
+  "method": "Actual in-app browser UI actions by development agent",
+  "checks": [
+    "Legacy migrated records labeled historical; fresh baseline available",
+    "Cart requirement saved before coupon control exists",
+    "Confirmed uncovered requirement remains incomplete",
+    "Stopped local server: clear disconnected notice and disabled dependent buttons",
+    "Restarted local server: preserved requirement/result and buttons recovered"
+  ],
+  "human_efficiency": "Not measured; not a human usability study"
+}

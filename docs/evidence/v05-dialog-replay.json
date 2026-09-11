@@ -1,0 +1,188 @@
+{
+  "model_calls": 0,
+  "disclosure": "Final hidden-assertion guard replay using the previously recorded agent-generated dialog checks, not a new planning success.",
+  "results": [
+    {
+      "goal": "dialog-cancel",
+      "checks": [
+        {
+          "title": "Update details dialog visibility",
+          "expectation": "When the user opens the 'Update details' interface, a dialog must be displayed and visible on the screen.",
+          "status": "passed",
+          "step": 2,
+          "expected": {
+            "action": "expect_visible",
+            "target": {
+              "by": "role",
+              "value": "dialog",
+              "name": ""
+            },
+            "value": "",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-0.png",
+          "steps_completed": 2,
+          "seconds": 1.06
+        },
+        {
+          "title": "Cancel button functionality",
+          "expectation": "The visible 'Update details' dialog must contain a 'Cancel' button that allows the user to dismiss the dialog without saving changes.",
+          "status": "passed",
+          "step": 2,
+          "expected": {
+            "action": "expect_visible",
+            "target": {
+              "by": "text",
+              "value": "Cancel",
+              "name": ""
+            },
+            "value": "",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-1.png",
+          "steps_completed": 2,
+          "seconds": 0.47
+        },
+        {
+          "title": "Dialog hidden after Cancel",
+          "expectation": "After clicking the 'Cancel' button in the 'Update details' dialog, the dialog must be hidden from view and no longer interactable.",
+          "status": "passed",
+          "step": 3,
+          "expected": {
+            "action": "expect_hidden",
+            "target": {
+              "by": "role",
+              "value": "dialog",
+              "name": ""
+            },
+            "value": "",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-2.png",
+          "steps_completed": 3,
+          "seconds": 0.84
+        }
+      ],
+      "source": "real_playwright_chromium",
+      "all_passed": true
+    },
+    {
+      "goal": "dialog-confirm",
+      "checks": [
+        {
+          "title": "Access Update Details Control",
+          "expectation": "The user shall be able to open the 'Update details' interface (e.g., via a button or link).",
+          "status": "passed",
+          "step": 2,
+          "expected": {
+            "action": "expect_visible",
+            "target": {
+              "by": "role",
+              "value": "dialog",
+              "name": ""
+            },
+            "value": "",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-0.png",
+          "steps_completed": 2,
+          "seconds": 1.05
+        },
+        {
+          "title": "Select Favorite Animal",
+          "expectation": "The 'Update details' interface shall contain a control for 'Favorite animal' allowing the user to select an option.",
+          "status": "passed",
+          "step": 3,
+          "expected": {
+            "action": "expect_value",
+            "target": {
+              "by": "label",
+              "value": "Favorite animal:",
+              "name": ""
+            },
+            "value": "Red panda",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-1.png",
+          "steps_completed": 3,
+          "seconds": 0.66
+        },
+        {
+          "title": "Verify Selected Value",
+          "expectation": "After selecting 'Red panda' as the Favorite animal, the interface shall display 'Red panda' as the selected value in the Favorite animal field.",
+          "status": "passed",
+          "step": 3,
+          "expected": {
+            "action": "expect_value",
+            "target": {
+              "by": "label",
+              "value": "Favorite animal:",
+              "name": ""
+            },
+            "value": "Red panda",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-2.png",
+          "steps_completed": 3,
+          "seconds": 0.61
+        },
+        {
+          "title": "Confirm Action",
+          "expectation": "The 'Update details' interface shall contain a 'Confirm' button that the user can click to submit the changes.",
+          "status": "passed",
+          "step": 3,
+          "expected": {
+            "action": "click",
+            "target": {
+              "by": "text",
+              "value": "Confirm",
+              "name": ""
+            },
+            "value": "",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-3.png",
+          "steps_completed": 3,
+          "seconds": 0.72
+        },
+        {
+          "title": "Dialog Closure on Confirm",
+          "expectation": "Upon clicking 'Confirm', the 'Update details' dialog/interface must close.",
+          "status": "passed",
+          "step": 4,
+          "expected": {
+            "action": "expect_hidden",
+            "target": {
+              "by": "role",
+              "value": "dialog",
+              "name": ""
+            },
+            "value": "",
+            "count": 0,
+            "checked": true
+          },
+          "actual": "All declared browser assertions passed",
+          "screenshot": "flow-4.png",
+          "steps_completed": 4,
+          "seconds": 0.99
+        }
+      ],
+      "source": "real_playwright_chromium",
+      "all_passed": true
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "created": 1789110027.231889,
+  "latest_report_sha256": "2a1ec752cc2161ab6d2e2de854a616f15dd3191a0955b8d4bac346de74977492",
+  "rounds": [
+    {
+      "report": "v05-planning-results.json",
+      "passed": 0,
+      "total": 4,
+      "calls": 24,
+      "reported_cny": 0.013378600000000001,
+      "unknown_reserved_cny": 0,
+      "input_tokens": 45701,
+      "output_tokens": 5298
+    },
+    {
+      "report": "v05-planning-results-retry1.json",
+      "passed": 1,
+      "total": 4,
+      "calls": 25,
+      "reported_cny": 0.0203026,
+      "unknown_reserved_cny": 0,
+      "input_tokens": 71417,
+      "output_tokens": 7524
+    },
+    {
+      "report": "v05-planning-results-retry2.json",
+      "passed": 2,
+      "total": 4,
+      "calls": 32,
+      "reported_cny": 0.0268694,
+      "unknown_reserved_cny": 0,
+      "input_tokens": 93559,
+      "output_tokens": 10197
+    },
+    {
+      "report": "v05-planning-results-retry3.json",
+      "passed": 0,
+      "total": 4,
+      "calls": 40,
+      "reported_cny": 0.0370764,
+      "unknown_reserved_cny": 0,
+      "input_tokens": 135574,
+      "output_tokens": 12452
+    },
+    {
+      "report": "v05-planning-results-retry4.json",
+      "passed": 4,
+      "total": 4,
+      "calls": 35,
+      "reported_cny": 0.023661400000000003,
+      "unknown_reserved_cny": 0,
+      "input_tokens": 97379,
+      "output_tokens": 5232
+    }
+  ],
+  "review": [
+    {
+      "goal": "shopping-add",
+      "status": "passed",
+      "can_accept": true,
+      "requirements": 1,
+      "assertions": 2,
+      "review": "Generated steps inspected against the frozen reference outcomes after planning. Required actions and outcome assertions are present; this is an AI/developer review, not human user research."
+    },
+    {
+      "goal": "shopping-delete",
+      "status": "passed",
+      "can_accept": true,
+      "requirements": 3,
+      "assertions": 3,
+      "review": "Generated steps inspected against the frozen reference outcomes after planning. Required actions and outcome assertions are present; this is an AI/developer review, not human user research."
+    },
+    {
+      "goal": "dialog-cancel",
+      "status": "passed",
+      "can_accept": true,
+      "requirements": 2,
+      "assertions": 2,
+      "review": "Generated steps inspected against the frozen reference outcomes after planning. Required actions and outcome assertions are present; this is an AI/developer review, not human user research."
+    },
+    {
+      "goal": "dialog-confirm",
+      "status": "passed",
+      "can_accept": true,
+      "requirements": 1,
+      "assertions": 2,
+      "review": "Generated steps inspected against the frozen reference outcomes after planning. Required actions and outcome assertions are present; this is an AI/developer review, not human user research."
+    }
+  ],
+  "total_reported_cny": 0.1212884,
+  "total_calls": 156,
+  "limits": "Same four goals used for iterative debugging, not a held-out generalization benchmark. Source fixtures and reference outcomes unchanged. No human efficiency claim."
+}

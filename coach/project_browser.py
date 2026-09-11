@@ -8,7 +8,7 @@ import sys
 import time
 from urllib.parse import urlsplit
 
-from .project_checks import Flow, local_url
+from .project_checks import Flow, Exploration, local_url
 from .settings import ROOT
 
 
@@ -63,10 +63,26 @@ def execute(payload):
             try:
                 response = page.goto(url, wait_until='domcontentloaded', timeout=10000)
                 if response and response.status >= 400: raise ValueError('Preview returned HTTP error')
+                exploration = Exploration.model_validate({'steps': payload.get('exploration', [])})
+                for step in exploration.steps:
+                    target = locate(page, step.target) if step.target else None
+                    if target is not None and (target.count() != 1 or not target.is_visible()):
+                        raise ValueError('Exploration target missing, hidden or ambiguous; observe the preceding page first')
+                    if step.action == 'navigate': page.goto(origin + step.value, wait_until='domcontentloaded', timeout=10000)
+                    elif step.action == 'click': target.click()
+                    elif step.action == 'fill': target.fill(step.value)
+                    elif step.action == 'select': target.select_option(step.value)
+                    elif step.action == 'hover': target.hover()
+                    elif step.action == 'press': target.press(step.value)
                 page.screenshot(path=str(directory / 'page.png'))
                 fields = page.locator('input,select,textarea,output,[role="alert"]').evaluate_all("els => els.slice(0,40).map(e=>({tag:e.tagName.toLowerCase(),type:e.getAttribute('type'),label:e.getAttribute('aria-label')||Array.from(e.labels||[]).map(x=>x.textContent.trim()).join(' '),role:e.getAttribute('role')}))")
-                return {'title': page.title(), 'page': page.locator('body').aria_snapshot()[:7000], 'elements': fields,
-                        'blocked_resources': bool(blocked), 'source': 'live_browser'}
+                leaves = page.locator('body *').evaluate_all("els => els.filter(e=>!e.children.length && e.checkVisibility() && e.innerText && e.innerText.trim().length<=160).slice(0,60).map(e=>e.innerText.trim())")
+                text_targets = [{'by':'text','value':value} for value in dict.fromkeys(leaves) if page.get_by_text(value,exact=True).count()==1]
+                return {'text_targets': text_targets, 'title': page.title(), 'page': page.locator('body').aria_snapshot()[:7000], 'elements': fields,
+                        'blocked_resources': bool(blocked), 'source': 'live_browser',
+                        'truncated': len(page.locator('body').aria_snapshot()) > 7000,
+                        'next_step': 'Narrow the page or remove external dependencies if observations are truncated or blocked',
+                        'exploration': payload.get('exploration', [])}
             finally:
                 ctx.close()
                 browser.close()
@@ -79,7 +95,12 @@ def execute(payload):
             try:
                 response = page.goto(url, wait_until='domcontentloaded', timeout=10000)
                 if response and response.status >= 400: raise ValueError('Preview returned HTTP error')
+                hidden_targets = {json.dumps(s.target.model_dump(), sort_keys=True): s.target for s in flow.steps if s.action == 'expect_hidden'}
+                seen_visible = set()
                 for index, step in enumerate(flow.steps):
+                    for key, locator in hidden_targets.items():
+                        candidate = locate(page, locator)
+                        if candidate.count() == 1 and candidate.is_visible(): seen_visible.add(key)
                     row['step'] = index + 1
                     row['expected'] = step.model_dump(exclude_none=True)
                     a, target = step.action, locate(page, step.target) if step.target else None
@@ -95,6 +116,10 @@ def execute(payload):
                     elif a == 'expect_value': expect(target).to_have_value(step.value, timeout=2000)
                     elif a == 'expect_count': expect(target).to_have_count(step.count, timeout=2000)
                     elif a == 'expect_visible': expect(target).to_be_visible(timeout=2000)
+                    elif a == 'expect_hidden':
+                        if json.dumps(step.target.model_dump(), sort_keys=True) not in seen_visible:
+                            raise ValueError('Hidden assertion target was never observed visible in this flow; verify the locator and opening steps')
+                        expect(target).to_be_hidden(timeout=2000)
                     elif a == 'expect_checked': expect(target).to_be_checked(checked=step.checked, timeout=2000)
                     elif a == 'expect_url': expect(page).to_have_url(origin + step.value, timeout=2000)
                     row['steps_completed'] += 1
@@ -104,6 +129,18 @@ def execute(payload):
                     row['actual'] = 'All declared browser assertions passed'
             except AssertionError as exc:
                 row.update(status='failed', actual=str(exc)[:1400])
+                try:
+                    if step.action == 'expect_text' and step.value and page.get_by_text(step.value, exact=True).count()==1:
+                        row['locator_hint'] = {'observed_exact_text_target': {'by':'text','value':step.value}, 'note':'This exact text exists as a unique element in the failing page; inspect before changing the target. Keep the expected value.'}
+                    if step.action == 'expect_text': observed = target.all_text_contents()
+                    elif step.action == 'expect_value': observed = target.input_value()
+                    elif step.action == 'expect_count': observed = target.count()
+                    elif step.action in {'expect_visible','expect_hidden'}: observed = target.is_visible()
+                    elif step.action == 'expect_checked': observed = target.is_checked()
+                    else: observed = page.url
+                    row['observed_value'] = observed
+                    row['business_summary'] = f"{flow.expectation} | Expected: {step.value if step.action not in {'expect_count','expect_hidden','expect_visible'} else step.count if step.action == 'expect_count' else step.action} | Actual: {observed}"
+                except Exception: pass
             except Exception as exc:
                 row.update(status='inconclusive', actual=f'{type(exc).__name__}: {str(exc)[:900]}')
             finally:
@@ -119,20 +156,20 @@ def execute(payload):
             'all_passed': bool(checks) and all(c['status'] == 'passed' for c in checks)}
 
 
-def run_browser(url, flows, directory, *, observe=False, record_video=False, cancelled=lambda: False):
+def run_browser(url, flows, directory, *, observe=False, record_video=False, exploration=None, cancelled=lambda: False):
     from .browser_slot import browser_slot
     try:
         with browser_slot(cancelled):
-            return _run_browser(url, flows, directory, observe=observe, record_video=record_video, cancelled=cancelled)
+            return _run_browser(url, flows, directory, observe=observe, record_video=record_video, exploration=exploration, cancelled=cancelled)
     except ValueError as exc:
         return {'error': str(exc), 'checks': [], 'all_passed': False}
 
 
-def _run_browser(url, flows, directory, *, observe=False, record_video=False, cancelled=lambda: False):
+def _run_browser(url, flows, directory, *, observe=False, record_video=False, exploration=None, cancelled=lambda: False):
     directory = Path(directory).resolve()
     directory.mkdir(parents=True, exist_ok=True)
     inp, out = directory / 'input.json', directory / 'output.json'
-    inp.write_text(json.dumps({'url': url, 'flows': flows, 'directory': str(directory), 'observe': observe, 'record_video':record_video}), encoding='utf-8')
+    inp.write_text(json.dumps({'url': url, 'flows': flows, 'directory': str(directory), 'observe': observe, 'record_video':record_video, 'exploration':exploration or []}), encoding='utf-8')
     env = {k: v for k, v in os.environ.items() if k.upper() in {
         'SYSTEMROOT', 'WINDIR', 'PATH', 'PATHEXT', 'TEMP', 'TMP', 'USERPROFILE', 'LOCALAPPDATA', 'HOME'}}
     env.update(PYTHONUTF8='1', PLAYWRIGHT_BROWSERS_PATH=os.environ.get('PLAYWRIGHT_BROWSERS_PATH', str(ROOT / '.browsers')))

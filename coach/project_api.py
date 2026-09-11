@@ -24,6 +24,8 @@ class Connect(BaseModel):
 class Prepare(BaseModel):
     goal: str = Field(min_length=3, max_length=1200)
     language: Literal['zh', 'en'] = 'zh'
+    stage: Literal['intent', 'bind'] = 'intent'
+    requirement_ids: list[str] = Field(default_factory=list, max_length=10)
 
 
 class Confirm(BaseModel):
@@ -32,6 +34,13 @@ class Confirm(BaseModel):
 
 class Watch(BaseModel):
     enabled: bool
+
+
+class RequirementDraft(BaseModel):
+    goal: str = Field(min_length=3, max_length=1200)
+    operations: list[dict] = Field(min_length=1, max_length=20)
+    parent: str | None = None
+    source_hash: str = Field(min_length=64, max_length=64)
 
 
 class ManualDraft(BaseModel):
@@ -44,11 +53,19 @@ def router(service):
 
     def fail(exc): raise HTTPException(409, str(exc))
 
+    def source_hash(p):
+        try: return snapshot(p['root'])['hash']
+        except (OSError, ValueError): return None
+
     @api.get('')
     def state(request: Request):
         owner = request.state.owner
-        return {'projects': [service.public(p) for p in service.list(owner, 'project')],
-                'runs': [service.public(r) for r in service.list(owner, 'run')[:30]],
+        projects = service.list(owner, 'project')
+        runs = service.list(owner, 'run')
+        contexts = {p['id']: {'project': p, 'source_hash': source_hash(p),
+                    'latest_check': next((r['id'] for r in runs if r['project_id']==p['id'] and r['mode']=='check'), None)} for p in projects}
+        return {'projects': [{**service.public(p), 'current_source_hash': contexts[p['id']]['source_hash']} for p in projects],
+                'runs': [service.result_view(r, contexts[r['project_id']]) for r in runs[:30]],
                 'busy': bool(service.active), 'model': public_model(), 'public': os.environ.get('APP_PUBLIC') == 'true',
                 'budget': service.store.budget(), 'budget_limit_cny': settings()['budget_cny']}
 
@@ -67,8 +84,16 @@ def router(service):
 
     @api.get('/runs/{run_id}')
     def run(run_id: str, request: Request):
-        try: return service.public(service.get(request.state.owner, run_id, 'run'))
+        try: return service.result_view(service.get(request.state.owner, run_id, 'run'))
         except ValueError as exc: fail(exc)
+
+    @api.post('/sample/cart')
+    def cart_sample(request: Request):
+        port = os.environ.get('PORT', '8791')
+        try:
+            return service.public(service.connect(request.state.owner, ROOT / 'examples/cart',
+                f'http://127.0.0.1:{port}/samples/cart/', 'Everyday Cart', sample=True))
+        except (ValueError, OSError) as exc: fail(exc)
 
     @api.post('/runs/{run_id}/cancel')
     def cancel(run_id: str, request: Request):
@@ -79,7 +104,7 @@ def router(service):
     def evidence(run_id: str, phase: str, filename: str, request: Request):
         try: service.get(request.state.owner, run_id, 'run')
         except ValueError: raise HTTPException(404)
-        if phase not in {'checks', 'observe'} or not re.fullmatch(r'(page|flow-\d+)\.png', filename): raise HTTPException(404)
+        if not re.fullmatch(r'checks|observe(?:-[1-3])?', phase) or not re.fullmatch(r'(page|flow-\d+)\.png', filename): raise HTTPException(404)
         target = service.store.root / 'project-artifacts' / run_id / phase / filename
         if not target.is_file(): raise HTTPException(404)
         return FileResponse(target, media_type='image/png')
@@ -88,7 +113,7 @@ def router(service):
     def report(run_id: str, request: Request):
         try: run = service.get(request.state.owner, run_id, 'run')
         except ValueError: raise HTTPException(404)
-        return Response(run.get('repair_brief', 'Still running'), media_type='text/markdown',
+        return Response(service.result_view(run)['repair_brief'], media_type='text/markdown',
                         headers={'Content-Disposition': 'attachment; filename="acceptance-evidence.md"'})
 
     @api.get('/drafts/{draft_id}')
@@ -110,8 +135,19 @@ def router(service):
 
     @api.post('/{project_id}/prepare')
     def prepare(project_id: str, payload: Prepare, request: Request):
-        try: return service.public(service.submit(request.state.owner, project_id, 'prepare', payload.goal, payload.language))
+        try: return service.public(service.submit(request.state.owner, project_id, 'prepare', payload.goal, payload.language, stage=payload.stage, requirement_ids=payload.requirement_ids))
         except (ValueError, OSError) as exc: fail(exc)
+
+    @api.post('/{project_id}/requirement-draft')
+    def requirement_draft(project_id: str, payload: RequirementDraft, request: Request):
+        try:
+            if any(o.get('action') == 'bind' for o in payload.operations) and os.environ.get('APP_PUBLIC') == 'true':
+                raise ValueError('Manual browser bindings are local-only')
+            p = service.get(request.state.owner, project_id, 'project')
+            if snapshot(p['root'])['hash'] != payload.source_hash: raise ValueError('Source changed; refresh and review again')
+            return service.public(service.requirement_draft(request.state.owner, project_id, payload.goal,
+                payload.operations, payload.source_hash, payload.parent, check_parent=True))
+        except (ValueError, OSError, KeyError, TypeError) as exc: fail(exc)
 
     @api.post('/{project_id}/draft')
     def manual_draft(project_id: str, payload: ManualDraft, request: Request):
@@ -157,7 +193,7 @@ def router(service):
     @api.post('/bridge/{project_id}/prepare')
     def bridge_prepare(project_id: str, payload: Prepare, request: Request):
         owner = bridge_auth(project_id, request)
-        try: return service.public(service.submit(owner, project_id, 'prepare', payload.goal, payload.language))
+        try: return service.public(service.submit(owner, project_id, 'prepare', payload.goal, payload.language, stage=payload.stage, requirement_ids=payload.requirement_ids))
         except (ValueError, OSError) as exc: fail(exc)
 
     @api.post('/bridge/{project_id}/check')
@@ -172,7 +208,7 @@ def router(service):
         try:
             r = service.get(owner, run_id, 'run')
             if r['project_id'] != project_id: raise ValueError('Run belongs to another project')
-            result = service.public(r)
+            result = service.result_view(r)
             result['evidence_files'] = [str((service.store.root / 'project-artifacts' / r['id'] / 'checks' / c['screenshot']).resolve())
                 for c in r.get('checks', []) if c.get('screenshot') and c['status'] != 'passed']
             if r.get('draft_id'): result['draft'] = service.public(service.get(owner, r['draft_id'], 'draft'))

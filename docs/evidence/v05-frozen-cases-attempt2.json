@@ -1,0 +1,380 @@
+{
+  "created": 1789098056.368088,
+  "public_react_commit": "ff43b02e59dfa604386bb382034b2cd07c2bcd8a",
+  "disclosure": "Artificial mutations; developer-defined (AI-assisted) frozen acceptance flows; no model calls. LoopCheck frontend uses its running backend through a local proxy.",
+  "cases": [
+    {
+      "app": "budget",
+      "id": "B1",
+      "kind": "fault",
+      "file": "app.js",
+      "old": "(i - e).toFixed(2)",
+      "new": "(i + e).toFixed(2)"
+    },
+    {
+      "app": "budget",
+      "id": "B2",
+      "kind": "fault",
+      "file": "app.js",
+      "old": "!income.value || !expense.value || !Number.isFinite(i) || !Number.isFinite(e) || i < 0 || e < 0",
+      "new": "false"
+    },
+    {
+      "app": "budget",
+      "id": "B3",
+      "kind": "feature",
+      "file": "index.html",
+      "old": "</select>",
+      "new": "<option value=\"books\">Books</option></select>"
+    },
+    {
+      "app": "budget",
+      "id": "B4",
+      "kind": "cosmetic",
+      "file": "style.css",
+      "old": "background:#edf5f1",
+      "new": "background:#f1f4fb"
+    },
+    {
+      "app": "react",
+      "id": "R1",
+      "kind": "fault",
+      "file": "app.bundle.js",
+      "old": "case _t:return e.concat({id:$t(),title:t.payload.title,completed:!1});",
+      "new": "case _t:return e.concat({id:$t(),title:\"Wrong item\",completed:!1});"
+    },
+    {
+      "app": "react",
+      "id": "R2",
+      "kind": "fault",
+      "file": "app.bundle.js",
+      "old": "case Tt:return e.filter(e=>e.id!==t.payload.id);",
+      "new": "case Tt:return e;"
+    },
+    {
+      "app": "react",
+      "id": "R3",
+      "kind": "feature",
+      "file": "index.html",
+      "old": "</footer>",
+      "new": "<p>Tip: use Enter to add an item.</p></footer>"
+    },
+    {
+      "app": "react",
+      "id": "R4",
+      "kind": "cosmetic",
+      "file": "index.html",
+      "old": "</head>",
+      "new": "<style>body{background:#f1f4fb}</style></head>"
+    },
+    {
+      "app": "loopcheck",
+      "id": "L1",
+      "kind": "fault",
+      "file": "projects.js",
+      "old": "language=language==='zh'?'en':'zh'",
+      "new": "language='zh'"
+    },
+    {
+      "app": "loopcheck",
+      "id": "L2",
+      "kind": "fault",
+      "file": "projects.js",
+      "old": "$('goal').value=t('sampleGoal')",
+      "new": "$('goal').value=''"
+    },
+    {
+      "app": "loopcheck",
+      "id": "L3",
+      "kind": "feature",
+      "file": "projects.html",
+      "old": "<footer>",
+      "new": "<p>Local projects remain on your computer.</p><footer>"
+    },
+    {
+      "app": "loopcheck",
+      "id": "L4",
+      "kind": "cosmetic",
+      "file": "projects.css",
+      "old": "background:#f5f6f2",
+      "new": "background:#f2f5f8"
+    }
+  ],
+  "flows": {
+    "budget": [
+      {
+        "title": "Accurate balance",
+        "expectation": "Income 1200 minus spending 350 leaves 850.00",
+        "steps": [
+          {
+            "action": "fill",
+            "target": {
+              "by": "label",
+              "value": "Monthly income"
+            },
+            "value": "1200"
+          },
+          {
+            "action": "fill",
+            "target": {
+              "by": "label",
+              "value": "Planned spending"
+            },
+            "value": "350"
+          },
+          {
+            "action": "click",
+            "target": {
+              "by": "role",
+              "value": "button",
+              "name": "Calculate balance"
+            }
+          },
+          {
+            "action": "expect_text",
+            "target": {
+              "by": "label",
+              "value": "Remaining balance"
+            },
+            "value": "850.00"
+          }
+        ]
+      },
+      {
+        "title": "Reject invalid amounts",
+        "expectation": "A negative amount displays a validation error",
+        "steps": [
+          {
+            "action": "fill",
+            "target": {
+              "by": "label",
+              "value": "Planned spending"
+            },
+            "value": "-3"
+          },
+          {
+            "action": "click",
+            "target": {
+              "by": "role",
+              "value": "button",
+              "name": "Calculate balance"
+            }
+          },
+          {
+            "action": "expect_text",
+            "target": {
+              "by": "role",
+              "value": "alert"
+            },
+            "value": "Enter non-negative amounts."
+          }
+        ]
+      },
+      {
+        "title": "Remember after reload",
+        "expectation": "Saved income, spending, and balance survive a reload",
+        "steps": [
+          {
+            "action": "fill",
+            "target": {
+              "by": "label",
+              "value": "Monthly income"
+            },
+            "value": "2300"
+          },
+          {
+            "action": "fill",
+            "target": {
+              "by": "label",
+              "value": "Planned spending"
+            },
+            "value": "150"
+          },
+          {
+            "action": "click",
+            "target": {
+              "by": "role",
+              "value": "button",
+              "name": "Calculate balance"
+            }
+          },
+          {
+            "action": "reload"
+          },
+          {
+            "action": "expect_value",
+            "target": {
+              "by": "label",
+              "value": "Monthly income"
+            },
+            "value": "2300"
+          },
+          {
+            "action": "expect_value",
+            "target": {
+              "by": "label",
+              "value": "Planned spending"
+            },
+            "value": "150"
+          },
+          {
+            "action": "expect_text",
+            "target": {
+              "by": "label",
+              "value": "Remaining balance"
+            },
+            "value": "2150.00"
+          }
+        ]
+      }
+    ],
+    "react": [
+      {
+        "title": "Create a named todo",
+        "expectation": "Adding Alpha displays Alpha",
+        "steps": [
+          {
+            "action": "fill",
+            "target": {
+              "by": "label",
+              "value": "New Todo Input"
+            },
+            "value": "Alpha"
+          },
+          {
+            "action": "press",
+            "target": {
+              "by": "label",
+              "value": "New Todo Input"
+            },
+            "value": "Enter"
+          },
+          {
+            "action": "expect_text",
+            "target": {
+              "by": "text",
+              "value": "Alpha"
+            },
+            "value": "Alpha"
+          }
+        ]
+      },
+      {
+        "title": "Delete the created todo",
+        "expectation": "Deleting Alpha removes it from the list",
+        "steps": [
+          {
+            "action": "fill",
+            "target": {
+              "by": "label",
+              "value": "New Todo Input"
+            },
+            "value": "Alpha"
+          },
+          {
+            "action": "press",
+            "target": {
+              "by": "label",
+              "value": "New Todo Input"
+            },
+            "value": "Enter"
+          },
+          {
+            "action": "hover",
+            "target": {
+              "by": "text",
+              "value": "Alpha"
+            }
+          },
+          {
+            "action": "click",
+            "target": {
+              "by": "role",
+              "value": "button",
+              "name": "Delete todo"
+            }
+          },
+          {
+            "action": "expect_count",
+            "target": {
+              "by": "text",
+              "value": "Alpha"
+            },
+            "count": 0
+          }
+        ]
+      }
+    ],
+    "loopcheck": [
+      {
+        "title": "Switch the workspace language",
+        "expectation": "English toggles the main heading into English",
+        "steps": [
+          {
+            "action": "click",
+            "target": {
+              "by": "role",
+              "value": "button",
+              "name": "English"
+            }
+          },
+          {
+            "action": "expect_text",
+            "target": {
+              "by": "role",
+              "value": "heading",
+              "name": "Keep every change honest."
+            },
+            "value": "Keep every change honest."
+          }
+        ]
+      },
+      {
+        "title": "Start with an actionable example",
+        "expectation": "The sample connects and pre-fills a concrete change goal",
+        "steps": [
+          {
+            "action": "click",
+            "target": {
+              "by": "role",
+              "value": "button",
+              "name": "先试试：预算计算器 →"
+            }
+          },
+          {
+            "action": "expect_value",
+            "target": {
+              "by": "label",
+              "value": "这次想改什么，哪些行为必须保留？"
+            },
+            "value": "保留三项行为：收入 1200 减去支出 350，余额为 850.00；输入负数时显示校验错误；保存收入 2300 和支出 150 后，刷新页面仍保留数据。"
+          }
+        ]
+      }
+    ]
+  },
+  "source_hashes": {
+    "budget": {
+      "app.js": "c13369fb0dea9e797653075a5a66000a6b60151cb9fb47f683dcfdf5c5829f22",
+      "index.html": "0def994df15b66dcaa91749140ce5349ad00b9c3b73eeb8dc6bd4c7ccf0d441b",
+      "style.css": "d3ccc5bba5b4aa5a9d623caea6724090bc9f7012aba9034526985aefa56eed95"
+    },
+    "react": {
+      "app.bundle.js": "6197ad9358985fb3f745aef3fca9abbe2fc7f0cd35cd4525cb8570107ae6b78a",
+      "app.bundle.js.LICENSE.txt": "2fde10fedaa9ebac195ff484ddb08969f5d04ab284ba65000b3cbf0992703640",
+      "app.css": "a0ccea8c39f22bcad35a2821b1e1009a05e028e51884649d0cd1552776b0fdef",
+      "base.js": "8cfbaa8d2bc03e2e52a8b7788e041efda231a17e2a25c8bc4bfe2659adc5bb90",
+      "index.html": "23b40a8b71f26e44f3e72e682188a3ab238d17fd375ff0ec06295af9971fa959",
+      "license.md": "32238c5c6759b589ea768661b6eb0fcb42449b74d57cdf09928743f2e1eb748d"
+    },
+    "loopcheck": {
+      "app.js": "bbef0010fccc5000c3db16e22feb3cea922926f074d613b6af3870c22ad052ae",
+      "index.html": "0a8eccef535bb2453039377ae6b68d7912ca1d5afbd6cc37c0c3ca2ca3bf178f",
+      "projects.css": "b6afbb65d90a86779ceea49f08b765e19e7d01b4f740789909be364f0037a2b8",
+      "projects.html": "698247e5899747793a9bfe26ff8c0bfbda7571d993fabab6c15c190ad77ed810",
+      "projects.js": "f1ffd6973b54fef9d3af86b8c2eba838ead0c8b0fd0d1680c678607d6616ade6",
+      "requirements.js": "2e835199c4e2d1602fd1f1fa4cb41d024c600e979747cd47a6f80e6e9d6922e6",
+      "style.css": "733b708944d0dd5e12e3cacc7feb462e2e64cc72674add06fef6375259bba225"
+    }
+  }
+}

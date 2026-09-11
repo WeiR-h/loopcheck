@@ -1,0 +1,49 @@
+{
+  "created": 1789109087.5108597,
+  "goals": [
+    {
+      "id": "shopping-add",
+      "fixture": "shopping",
+      "goal": "Add Milk to the shopping list. The list must contain Milk and the new item input must be empty after adding.",
+      "reference": [
+        "Milk appears as list item",
+        "input is empty"
+      ]
+    },
+    {
+      "id": "shopping-delete",
+      "fixture": "shopping",
+      "goal": "Add Milk, then delete that item. The shopping list must be empty afterwards.",
+      "reference": [
+        "add Milk first",
+        "delete item",
+        "empty list"
+      ]
+    },
+    {
+      "id": "dialog-cancel",
+      "fixture": "dialog",
+      "goal": "Open Update details. The dialog must be visible. Click Cancel. The dialog must be hidden.",
+      "reference": [
+        "dialog visible after opening",
+        "hidden after Cancel"
+      ]
+    },
+    {
+      "id": "dialog-confirm",
+      "fixture": "dialog",
+      "goal": "Open Update details. Select Red panda as Favorite animal and verify the selected value. Click Confirm. The dialog must close.",
+      "reference": [
+        "open dialog",
+        "select and verify Red panda",
+        "closed after Confirm"
+      ]
+    }
+  ],
+  "planner_sha256": "b7210e451ab47778a31a78f7f1caf4996093b3a3187f81af15bc45b7d9aa080b",
+  "fixtures": {
+    "shopping": "0a48f23009475e60cf5cf1805612ab01dc4280e17e0d0df8bb5cc609428898e4",
+    "dialog": "e40d83af46a0e575b08f49fd95de3efe4f931bfbf3e575a799a67a3405646fe8"
+  },
+  "disclosure": "Reference outcomes stay in evaluator; model receives only the natural language goal and live page. Test harness confirms drafts to exercise execution; this is not human usability evidence."
+}

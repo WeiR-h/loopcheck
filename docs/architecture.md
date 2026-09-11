@@ -1,4 +1,4 @@
-# LoopCheck 0.4 architecture
+# LoopCheck 0.5 architecture
 
 ```mermaid
 flowchart TD
@@ -6,15 +6,19 @@ flowchart TD
   U --> S[Strands acceptance planner]
   S --> M[Qwen3.7 Flash / Model Studio Beijing]
   S --> O[Inspect live page and observed controls]
-  O --> D[Propose bounded browser flows / trial run]
-  D --> H{Human reviews requirements}
+  O --> D[Draft business requirements, including future features]
+  D --> I[Human approves stable IDs and revisions]
+  I --> F[Observe implemented controls; draft bound checks]
+  F --> H
+  I --> UNC[Uncovered requirements stay incomplete]
+  H{Human reviews check steps and lifecycle differences}
   H -->|Confirm| C[(Versioned contract / SQLite)]
   C --> B[Independent Chromium subprocess]
   P --> W[Debounced source watcher]
   W --> B
   B --> V{Source and contract still current?}
   V -->|No| X[Stale: never approve; recheck latest up to twice]
-  V -->|Yes| R[Pass / regression / inconclusive + evidence]
+  V -->|Yes| R[Pass / regression / incomplete / inconclusive + evidence]
   R --> MCP[Local stdio MCP bridge]
   MCP --> AI[Existing coding AI changes original source]
   AI --> W
@@ -29,3 +33,5 @@ The real-project path never edits source. Strands observes the page, proposes st
 The native app binds to loopback by default. Each flow gets a fresh browser context. The worker has no provider key; requests are restricted to the connected origin. Frontend content is trusted local development material, not a hostile-code service. The public Docker mode disables local project connection and MCP, exposing only the provided fixture.
 
 SQLite and screenshots require persistent storage. The watcher needs the server running. Public source, live deployment and video publishing remain separate release steps; AgentCore is not part of this implementation. The historical v0.3 repair demo remains at `/legacy`.
+
+Requirement expectations and execution bindings are separate. Immutable contracts snapshot every lifecycle change; pass history keys use requirement ID, revision and flow digest. `can_accept` is computed against current source, contract and latest check, not cached historical state. Migration creates a SQLite backup and new contracts without altering old runs. Bounded exploration replays at most six actions from a fresh context, up to three observations.

@@ -1,14 +1,9 @@
-# Judge walkthrough — LoopCheck 0.4
+# LoopCheck 0.5 judging guide
 
-Audience: solo builders using AI to develop small web apps. Problem: a requested change can break previously working behavior, leading to repeated clicking, screenshots and bug explanations.
+Start the local edition with the instructions in README.en.md. Choose Everyday Cart, save a future coupon requirement, and see that an uncovered requirement prevents acceptance. Review requirement changes before confirming. Existing Pocket Budget remains available for browser checks.
 
-1. Open `/judge` and choose **Try it first: Pocket Budget**. This is an original, explicitly disclosed fixture.
-2. Select **Prepare acceptance checks**. Strands observes the actual page, proposes three workflows and trial-runs them. Review the goals and executable steps, then approve.
-3. **Check this change** records the passing baseline. Replaying confirmed flows uses no model request.
-4. In the local edition, connect your coding AI through MCP and enable source watching. Change the original project with your coding tool. The supplied evidence demonstrates an injected arithmetic regression.
-5. Inspect the expected 850.00 and observed 1550.00, the failed step and screenshot. Return the repair brief to the coding AI. Correct the source and run the same unchanged requirements again.
-6. Read the frozen three-project benchmark and live MCP evidence. The twelve mutation outcomes are a small controlled evaluation, not a general reliability claim. Human time savings were not measured.
+For reproducible automatic evidence, run `scripts/cart_gate_v05.py` then `scripts/verify_mcp_v05.py`. The gate copies the bundled cart, records its browser flows, adds an explicitly scripted feature and regression, then repairs source. It uses no model calls. Requirements are confirmed by the test harness, not a claimed human study.
 
-Public sample mode demonstrates planning and acceptance. Full original-directory watching and MCP are local-edition features. The repository must include this distinction. Public deployment must supply model access to judges without requiring a paid API key.
+Inspect `docs/验证记录-v05.md` and `docs/evidence/v05-planning-results*.json` for all live model planning outcomes, including unsuccessful rounds. The latest four-goal round passes both shopping-list and both dialog goals. All five debugging rounds (0/4, 1/4, 2/4, 0/4, 4/4) remain available; this is not held-out generalization evidence. Human review remains necessary.
 
-The previous task-list repair app remains at `/legacy` for historical comparison. AgentCore is not deployed. Public source: [https://github.com/WeiR-h/loopcheck](https://github.com/WeiR-h/loopcheck). [Linux CI](https://github.com/WeiR-h/loopcheck/actions/runs/34462275115) passed 25 tests, all 12 frozen mutation cases and a fresh Docker browser gate. At a 768 MiB container memory limit, peak usage was 324.27 MiB with no OOM. This CI gate used no model calls and is not an AWS instance capacity test. Hosted judging access, YouTube/Vimeo publication and Devpost submission remain pending. AgentCore is not deployed. [Publication evidence](evidence/v04-publication.json).
+Public Docker mode permits only bundled examples. Local project folders and MCP require the native local edition. Hosted judge access, public video publication and final submission are separate pending delivery steps. The existing 0.4 release/CI is historical; do not treat it as a 0.5 deployment test.

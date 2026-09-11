@@ -1,3 +1,14 @@
+# 0.5.0
+
+- Compact planner bindings and short revision references; full-path exploration feedback and bounded locator corrections that preserve assertions.
+- Latest retained live planning round: 4/4 goals; 35 tests and 12 frozen mutation cases pass. Earlier failures remain available.
+
+- Versioned business requirements separate from optional browser checks; incomplete coverage cannot pass.
+- Human-reviewed edits, retirement reasons, restoration and rebuilding; stable identity and immutable history.
+- Bounded dialog exploration, hidden assertions, full reproduction evidence and currentness-aware API/MCP results.
+- Legacy SQLite backup and conversion; historical outcomes cannot approve migrated requirements.
+- Four-goal live planning evaluation with all failures retained; cart development regression gate and pinned CC0 fixtures.
+
 # 0.4.0 — Real-project acceptance
 
 Local project connections, generic browser contracts, human approval, debounced source rechecks, stale-result protection and an authenticated stdio MCP bridge. New Chinese/English workspace; original v0.3 preserved at /legacy. Frozen three-project benchmark and retained live planning failure. No human-efficiency or publication claim.

@@ -1,0 +1,20 @@
+{
+  "version": "0.5.0",
+  "tests": 33,
+  "seconds": 211.163,
+  "outcome": "passed",
+  "test_log_sha256": "97fac44ef5d17b29ac93a29a54c38d4eba857f60a1620433cf3866ba4abf4ba3",
+  "disclosure": "Windows unit and real browser tests in isolated storage; not cloud verification.",
+  "final_targeted": {
+    "tests": 9,
+    "seconds": 87.041,
+    "outcome": "passed",
+    "test_log_sha256": "efd65e567d296a0a7d3b349946a77382b95e13701ae6257abe99ab88d0500684",
+    "includes": "hidden-target false-green guard"
+  },
+  "post_api_change": {
+    "tests": 2,
+    "seconds": 1.092,
+    "outcome": "passed"
+  }
+}

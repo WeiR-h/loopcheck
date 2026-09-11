@@ -33,10 +33,10 @@ def build(config):
         return r.json()
 
     @server.tool()
-    def prepare_change(goal: str, language: str = 'zh') -> dict:
-        """Ask the Strands agent to inspect the preview and propose new acceptance requirements.
+    def prepare_change(goal: str, language: str = 'zh', stage: str = 'intent', requirement_ids: list[str] | None = None) -> dict:
+        """Prepare business requirements (stage=intent) or checks for approved uncovered requirement_ids (stage=bind).
         Returns a run ID. Poll get_result. The human must review and confirm in LoopCheck before testing."""
-        return call('POST', '/prepare', {'goal': goal, 'language': language})
+        return call('POST', '/prepare', {'goal': goal, 'language': language, 'stage': stage, 'requirement_ids': requirement_ids or []})
 
     @server.tool()
     def check_change() -> dict:

@@ -23,7 +23,7 @@ class Locator(BaseModel):
 class BrowserStep(BaseModel):
     model_config = ConfigDict(extra='forbid')
     action: Literal['navigate', 'click', 'hover', 'fill', 'select', 'check', 'press', 'reload',
-                    'expect_text', 'expect_value', 'expect_count', 'expect_visible', 'expect_checked', 'expect_url']
+                    'expect_text', 'expect_value', 'expect_count', 'expect_visible', 'expect_hidden', 'expect_checked', 'expect_url']
     target: Locator | None = None
     value: str = Field(default='', max_length=240)
     count: int = Field(default=0, ge=0, le=1000)
@@ -31,6 +31,8 @@ class BrowserStep(BaseModel):
 
     @model_validator(mode='after')
     def valid(self):
+        if self.action in {'navigate','fill','select','press','expect_text','expect_value','expect_url'} and 'value' not in self.model_fields_set:
+            raise ValueError('This action requires an explicit value; an empty value must be intentional')
         if self.action not in {'navigate', 'reload', 'expect_url'} and not self.target:
             raise ValueError('This step needs an observed page locator')
         if self.action in {'navigate', 'expect_url'} and (not self.value.startswith('/') or self.value.startswith('//') or '\\' in self.value):
@@ -57,3 +59,48 @@ class Flow(BaseModel):
 class Proposal(BaseModel):
     model_config = ConfigDict(extra='forbid')
     flows: list[Flow] = Field(min_length=1, max_length=10)
+
+
+class Intent(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    title: str = Field(min_length=3, max_length=100)
+    expectation: str = Field(min_length=3, max_length=400)
+    purpose: Literal['preserve', 'new'] = 'preserve'
+
+
+class IntentProposal(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    requirements: list[Intent] = Field(min_length=1, max_length=10)
+
+
+class ExecutionSteps(BaseModel):
+    """Intent is copied from the approved revision, never supplied by the planner."""
+    model_config = ConfigDict(extra='forbid')
+    steps: list[BrowserStep] = Field(min_length=1, max_length=20)
+    # Accept legacy flow-shaped submissions without trusting their business text.
+    title: str | None = None
+    expectation: str | None = None
+    purpose: Literal['preserve', 'new'] | None = None
+
+
+class Binding(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    id: str
+    revision: int = Field(ge=1)
+    flow: ExecutionSteps
+
+
+class Bindings(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    bindings: list[Binding] = Field(min_length=1, max_length=10)
+
+
+class Exploration(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    steps: list[BrowserStep] = Field(default_factory=list, max_length=6)
+
+    @model_validator(mode='after')
+    def bounded(self):
+        if any(s.action not in {'click','fill','select','hover','press','navigate'} for s in self.steps):
+            raise ValueError('Exploration only supports click, fill, select, hover, press and same-origin navigation')
+        return self
