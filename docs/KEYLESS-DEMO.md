@@ -42,3 +42,5 @@ Local raw logs remain under `.test-data/guided-tests-attempt1.log`, `guided-test
 ## Delivery status
 
 0.5.0 remains an immutable published release. The 0.5.1 workflow publishes a separate source archive only after its own Linux tests and container verification succeed. AWS deployment, a public submission video and Devpost submission remain separate, incomplete steps. No paid resources were created for this patch.
+
+Publication verified: [0.5.1 release](https://github.com/WeiR-h/loopcheck/releases/tag/v0.5.1), [tested commit CI](https://github.com/WeiR-h/loopcheck/actions/runs/34593439800). Linux passed 37 tests in 72.063 seconds, all 12 frozen cases, the cart/MCP gates and the 768 MiB container check (330.34 MiB peak, no OOM). Anonymous download and all 167 manifest files were verified. See `docs/evidence/v051-publication.json`.

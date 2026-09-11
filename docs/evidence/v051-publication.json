@@ -1,0 +1,38 @@
+{
+  "version": "0.5.1",
+  "verified_commit": "3e51725261a424635bf15b03e7d6d5d8eac1a3fb",
+  "source_tree": "db7fd0a3c7f5a8af1ca50b31b0d69eac8ae0c181",
+  "ci_url": "https://github.com/WeiR-h/loopcheck/actions/runs/34593439800",
+  "ci_conclusion": "success",
+  "linux_tests": 37,
+  "linux_test_seconds": 72.063,
+  "frozen_cases": 12,
+  "false_green_faults": 0,
+  "false_alarms": 0,
+  "mcp_gate": "passed",
+  "future_requirement_cart_gate": "passed",
+  "container": {
+    "status": "passed",
+    "memory_limit_mib": 768,
+    "peak_memory_mib": 330.34,
+    "oom_killed": false,
+    "model_calls": 0
+  },
+  "release_url": "https://github.com/WeiR-h/loopcheck/releases/tag/v0.5.1",
+  "release_workflow_run": 34593692409,
+  "archive_sha256": "18b0edd1c7e2089369a980d2fa0c6ff7df9c8e5f9536a8c4e2487fefae97b83f",
+  "archive_bytes": 1618409,
+  "anonymous_download_verified": true,
+  "archive_manifest_verified": true,
+  "archive_manifest_files": 167,
+  "model_calls_this_delivery": 0,
+  "paid_resources_created": 0,
+  "ui_operator": "Codex browser automation, not a human-efficiency experiment",
+  "clipboard_readback": "unverified; inline reproduction brief verified",
+  "pending": [
+    "AWS hosted judge access",
+    "Public YouTube or Vimeo video",
+    "Author Builder profile and final Devpost submission"
+  ],
+  "limitation": "The keyless walkthrough uses disclosed preset requirements and scripted source edits. Linux container verification is not an AWS instance load test. No human-efficiency claim."
+}
