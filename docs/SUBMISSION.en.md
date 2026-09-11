@@ -47,7 +47,8 @@ Built with AI coding assistance. Pocket Budget is an original example. TodoMVC R
 This is an AI-assisted submission draft for author review.
 
 - Public repository: https://github.com/WeiR-h/loopcheck
-- Automated verification: https://github.com/WeiR-h/loopcheck/actions/runs/34462275115
+- Automated verification: https://github.com/WeiR-h/loopcheck/actions/runs/34589055868
+- Versioned source download: https://github.com/WeiR-h/loopcheck/releases/tag/v0.5.0
 - Free judge URL: pending AWS deployment and external verification.
 - YouTube/Vimeo URL: pending publication.
 - Builder profile: author to supply.

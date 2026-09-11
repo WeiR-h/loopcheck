@@ -1,0 +1,34 @@
+{
+  "version": "0.5.0",
+  "verified_commit": "dde7f9fec694252f08dde7c3cc2895c72ea5a9ee",
+  "source_tree": "15b36f0de9760b11a4e43d834da32aa3942a0f44",
+  "ci_url": "https://github.com/WeiR-h/loopcheck/actions/runs/34589055868",
+  "ci_conclusion": "success",
+  "linux_tests": 35,
+  "linux_test_seconds": 55.541,
+  "frozen_cases": 12,
+  "false_green_faults": 0,
+  "false_alarms": 0,
+  "mcp_gate": "passed",
+  "future_requirement_cart_gate": "passed",
+  "container": {
+    "status": "passed",
+    "memory_limit_mib": 768,
+    "peak_memory_mib": 326.74,
+    "oom_killed": false,
+    "model_calls": 0
+  },
+  "release_url": "https://github.com/WeiR-h/loopcheck/releases/tag/v0.5.0",
+  "release_workflow_run": 34589284281,
+  "archive_sha256": "3cd4fe98d2d8254478046584ca2d25d151d048985e44d924655da80c80538c82",
+  "anonymous_download_verified": true,
+  "archive_manifest_verified": true,
+  "model_calls_this_delivery": 0,
+  "paid_resources_created": 0,
+  "pending": [
+    "AWS hosted judge access",
+    "Public YouTube or Vimeo video",
+    "Author Builder profile and final Devpost submission"
+  ],
+  "limitation": "Linux CI container verification is not an AWS instance load test. No human efficiency measurement."
+}
