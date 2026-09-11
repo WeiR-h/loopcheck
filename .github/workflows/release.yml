@@ -27,16 +27,16 @@ jobs:
         run: |
           python -m pip install python-dotenv==1.2.3
           python scripts/package_release.py
-      - name: Publish immutable 0.5.0 assets
+      - name: Publish immutable 0.5.1 assets
         env:
           GH_TOKEN: ${{ github.token }}
           VERIFIED_SHA: ${{ github.event.workflow_run.head_sha }}
         run: |
-          if gh release view v0.5.0 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
-            echo "Version 0.5.0 already exists; preserving its assets."
+          if gh release view v0.5.1 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Version 0.5.1 already exists; preserving its assets."
             exit 0
           fi
-          gh release create v0.5.0 dist/loopcheck-v0.5.0-source.zip dist/SHA256SUMS.txt \
+          gh release create v0.5.1 dist/loopcheck-v0.5.1-source.zip dist/SHA256SUMS.txt \
             --repo "$GITHUB_REPOSITORY" --target "$VERIFIED_SHA" \
-            --title "LoopCheck 0.5.0 — Versioned requirements" \
-            --notes-file docs/RELEASE-0.5.en.md --latest
+            --title "LoopCheck 0.5.1 — Keyless guided walkthrough" \
+            --notes-file docs/RELEASE-0.5.1.en.md --latest

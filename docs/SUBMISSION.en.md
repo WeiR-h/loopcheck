@@ -13,6 +13,10 @@ After a source change, Chromium replays the approved flows. Results distinguish 
 
 A local MCP bridge exposes prepare_change, check_change and get_result. Your existing coding AI receives failed steps, expected and observed behavior, source filenames and screenshot evidence. It fixes the original project; LoopCheck verifies the same requirements again. MCP cannot approve or rewrite those requirements.
 
+## 0.5.1 guided access
+
+A keyless sample walkthrough now exposes the complete requirement lifecycle with real browser checks. Its preset requirements and scripted source edits are explicitly disclosed; it is separate from live Strands planning and does not demonstrate autonomous coding. Current coverage remains visible while reviewing historical failures, and the full reproduction brief can be expanded directly. See [retained verification attempts](KEYLESS-DEMO.md).
+
 ## How we built it
 Python, FastAPI, Strands Agents SDK, Qwen3.7 Flash via Alibaba Cloud Model Studio Beijing, Playwright/Chromium, SQLite and MCP. Strands performs real page observation, proposes structured browser actions and trial-runs its proposal. Deterministic browser assertions decide subsequent outcomes without model calls.
 

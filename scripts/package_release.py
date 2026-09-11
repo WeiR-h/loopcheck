@@ -27,10 +27,10 @@ for p in sorted(files):
         raise SystemExit('Private data detected in '+p.relative_to(ROOT).as_posix())
     manifest[p.relative_to(ROOT).as_posix()]=hashlib.sha256(data).hexdigest()
 path=ROOT/'docs/evidence/source-manifest.json'
-path.write_text(json.dumps({'version':'0.5.0','files':manifest},indent=2,ensure_ascii=False),encoding='utf-8')
+path.write_text(json.dumps({'version':'0.5.1','files':manifest},indent=2,ensure_ascii=False),encoding='utf-8')
 files.add(path)
 (ROOT/'dist').mkdir(exist_ok=True)
-archive=ROOT/'dist/loopcheck-v0.5.0-source.zip'
+archive=ROOT/'dist/loopcheck-v0.5.1-source.zip'
 with zipfile.ZipFile(archive,'w',zipfile.ZIP_DEFLATED) as z:
     for p in sorted(files): z.write(p,p.relative_to(ROOT).as_posix())
 with zipfile.ZipFile(archive) as z:

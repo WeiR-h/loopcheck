@@ -85,7 +85,7 @@ def main():
               'cases':CASES,'flows':specs,'source_hashes':{}}
     for app, path in bases.items():
         frozen['source_hashes'][app] = {p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in path.iterdir() if p.is_file()}
-    manifest = ROOT/'docs/evidence/v05-frozen-cases.json'
+    manifest = ROOT/'docs/evidence/v051-frozen-cases.json'
     manifest.write_text(json.dumps(frozen,ensure_ascii=False,indent=2),encoding='utf-8')
     rows, baseline = [], []
     for app, base in bases.items():
@@ -111,13 +111,13 @@ def main():
                 file.write_text(original,encoding='utf-8')
                 print(case['id'],rows[-1]['expected_outcome_met'],flush=True)
         finally: server.shutdown();server.server_close()
-    report={'version':'0.5.0','frozen_manifest_sha256':hashlib.sha256(manifest.read_bytes()).hexdigest(),
+    report={'version':'0.5.1','frozen_manifest_sha256':hashlib.sha256(manifest.read_bytes()).hexdigest(),
             'disclosure':frozen['disclosure'],'public_react_commit':COMMIT,'baseline':baseline,'cases':rows,
             'expected_outcomes_met':sum(r['expected_outcome_met'] for r in rows),'case_count':len(rows),
             'false_green_faults':sum(r['all_passed'] for r in rows if r['kind']=='fault'),
             'false_alarms':sum(not r['all_passed'] for r in rows if r['kind']!='fault'),'model_calls':0,
             'human_efficiency':'NOT MEASURED. Automated duration is not human time saved.'}
-    (ROOT/'docs/evidence/v05-benchmark.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
+    (ROOT/'docs/evidence/v051-benchmark.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
     print(json.dumps({k:v for k,v in report.items() if k not in {'baseline','cases'}},ensure_ascii=True))
 
 if __name__=='__main__': main()

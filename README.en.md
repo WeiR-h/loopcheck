@@ -1,4 +1,6 @@
-# LoopCheck 0.5.0
+# LoopCheck 0.5.1
+
+**New in 0.5.1:** use “Try the full flow · no API key” to approve a baseline, add an uncovered coupon requirement, inject a sample regression, inspect evidence and recheck the repair. Preset requirements and scripted edits are disclosed; browser checks are real and use no model. AI planning for real projects still needs a server-side key. [Walkthrough and verification](docs/KEYLESS-DEMO.md).
 
 **Keep every change honest.** [中文](README.md)
 

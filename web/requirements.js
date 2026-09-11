@@ -2,6 +2,7 @@
 Object.assign(words.zh,{incomplete:'本次修改尚未完成验收',incompleteHelp:'实现缺失功能后，生成并确认检查步骤，再复查全部要求。',expect_hidden:'应当隐藏'});
 Object.assign(words.en,{incomplete:'Acceptance is incomplete',incompleteHelp:'Implement missing behavior, generate and approve its checks, then recheck the full scope.',expect_hidden:'Must be hidden'});
 const dual=(zh,en)=>language==='zh'?zh:en;
+const latestCheck=()=>state.runs.find(r=>r.project_id===projectId&&r.mode==='check');
 let editingRequirement=null, editingAction='add';
 const originalRender=render;
 render=function(){
@@ -14,8 +15,8 @@ render=function(){
   $('add-requirement').disabled=!projectId||state.busy;
   $('bind-requirements').disabled=!active.some(r=>!r.flow)||state.busy;
   $('flow-count').textContent=`${active.length} / 10`;
-  const current=r?.is_current&&!historyPinned&&r.mode==='check';
-  const cov=current?r.coverage:null;
+  const checked=latestCheck(), current=checked?.is_current;
+  const cov=current?checked.coverage:null;
   $('coverage-summary').textContent=active.length?[
     dual('启用','Active')+': '+active.length,
     dual('未建立检查','Uncovered')+': '+active.filter(r=>!r.flow).length,
@@ -24,7 +25,7 @@ render=function(){
     dual('暂无法判断／待复查','Unknown / needs recheck')+': '+(cov?.inconclusive??active.filter(r=>r.flow).length),
     dual('已停用','Retired')+': '+requirements.filter(r=>!r.enabled).length
   ].join(' · '):dual('没有可验收要求，不能判为通过。','No active requirements. This cannot pass.');
-  $('requirements').innerHTML=requirements.map(req=>`<div class="flow"><div class="flow-title">${esc(req.title)} <small>v${req.revision} · ${esc(req.id.slice(0,8))}</small></div><p>${esc(req.expectation)}</p><p>${req.enabled?(req.flow?(current?(r.checks||[]).find(c=>c.requirement_id===req.id)?.status==='passed'?dual('本次通过','Passed this run'):(r.checks||[]).find(c=>c.requirement_id===req.id)?.status==='failed'?dual('本次失败','Failed this run'):dual('暂时无法判断','Inconclusive'):dual('已确认检查，待复查当前版本','Confirmed check; recheck current version')):dual('待实现，尚未建立检查','Pending implementation; no check yet')):dual('已退出本次验收范围：','Out of acceptance scope: ')+esc(req.reason)}</p>${req.flow?`<details><summary>${t('steps')}</summary><ol>${req.flow.steps.map(s=>`<li>${esc(stepText(s))}</li>`).join('')}</ol></details>`:''}<div class="actions">${req.enabled?`<button data-req="${req.id}" data-op="revise">${dual('修改','Edit')}</button>${req.flow?`<button data-req="${req.id}" data-op="rebuild">${dual('重建检查','Rebuild check')}</button>`:''}<button data-req="${req.id}" data-op="retire">${dual('停用','Retire')}</button>`:`<button data-req="${req.id}" data-op="restore">${dual('恢复并复查','Restore and recheck')}</button>`}</div></div>`).join('');
+  $('requirements').innerHTML=requirements.map(req=>`<div class="flow"><div class="flow-title">${esc(req.title)} <small>v${req.revision} · ${esc(req.id.slice(0,8))}</small></div><p>${esc(req.expectation)}</p><p>${req.enabled?(req.flow?(current?(checked.checks||[]).find(c=>c.requirement_id===req.id)?.status==='passed'?dual('本次通过','Passed this run'):(checked.checks||[]).find(c=>c.requirement_id===req.id)?.status==='failed'?dual('本次失败','Failed this run'):dual('暂时无法判断','Inconclusive'):dual('已确认检查，待复查当前版本','Confirmed check; recheck current version')):dual('待实现，尚未建立检查','Pending implementation; no check yet')):dual('已退出本次验收范围：','Out of acceptance scope: ')+esc(req.reason)}</p>${req.flow?`<details><summary>${t('steps')}</summary><ol>${req.flow.steps.map(s=>`<li>${esc(stepText(s))}</li>`).join('')}</ol></details>`:''}<div class="actions">${req.enabled?`<button data-req="${req.id}" data-op="revise">${dual('修改','Edit')}</button>${req.flow?`<button data-req="${req.id}" data-op="rebuild">${dual('重建检查','Rebuild check')}</button>`:''}<button data-req="${req.id}" data-op="retire">${dual('停用','Retire')}</button>`:`<button data-req="${req.id}" data-op="restore">${dual('恢复并复查','Restore and recheck')}</button>`}</div></div>`).join('');
   if(currentDraft){
     $('original-goal').textContent=dual('原始描述：','Original goal: ')+currentDraft.goal;
     const before=currentDraft.before||[];

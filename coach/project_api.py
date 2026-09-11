@@ -48,6 +48,13 @@ class ManualDraft(BaseModel):
     proposal: Proposal
 
 
+class DemoAction(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    action: Literal['future', 'feature', 'repair']
+    source_hash: str = Field(min_length=64, max_length=64)
+    contract_id: str | None = None
+
+
 def router(service):
     api = APIRouter(prefix='/api/projects')
 
@@ -56,6 +63,18 @@ def router(service):
     def source_hash(p):
         try: return snapshot(p['root'])['hash']
         except (OSError, ValueError): return None
+
+    @api.post('/guided-demo')
+    def guided_start(request: Request):
+        from .guided_demo import start
+        try: return start(service, request.state.owner)
+        except (ValueError, OSError) as exc: fail(exc)
+
+    @api.post('/{project_id}/guided-demo')
+    def guided_advance(project_id: str, payload: DemoAction, request: Request):
+        from .guided_demo import advance
+        try: return advance(service, request.state.owner, project_id, payload.action, payload.source_hash, payload.contract_id)
+        except (ValueError, OSError) as exc: fail(exc)
 
     @api.get('')
     def state(request: Request):

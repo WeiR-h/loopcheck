@@ -1,3 +1,10 @@
+# 0.5.1
+
+- Add a disclosed, keyless guided cart walkthrough with session-owned sample copies and real browser verification.
+- Keep requirement approval and source/contract guards on every scripted change.
+- Show complete reproduction briefs inline; preserve current coverage while browsing historical results.
+- Add public-mode, restart, ownership and rendered UI regression tests. See docs/KEYLESS-DEMO.md for retained attempts and limits.
+
 # 0.5.0
 
 - Compact planner bindings and short revision references; full-path exploration feedback and bounded locator corrections that preserve assertions.

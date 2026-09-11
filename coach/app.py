@@ -45,6 +45,17 @@ if os.environ.get('RENDER_EXTERNAL_HOSTNAME'):
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=allowed_hosts)
 
 
+@app.get('/samples/guided/{token}/{filename:path}')
+def guided_preview(token: str, filename: str):
+    # Only generated, non-sensitive demo assets; preview is deliberately shareable.
+    from .guided_demo import directory
+    if filename not in ('', 'index.html', 'app.js'): raise HTTPException(404)
+    try: target = directory(projects, token) / (filename or 'index.html')
+    except ValueError: raise HTTPException(404)
+    if not target.is_file(): raise HTTPException(404)
+    return FileResponse(target, headers={'Cache-Control': 'no-store'})
+
+
 @app.middleware('http')
 async def isolation(request: Request, call_next):
     if request.method not in ('GET', 'HEAD', 'OPTIONS'):
@@ -141,7 +152,7 @@ def legacy():
 
 @app.get('/health')
 def health():
-    return {'status': 'ok', 'version': '0.5.0'}
+    return {'status': 'ok', 'version': '0.5.1'}
 
 
 @app.get('/api/state')

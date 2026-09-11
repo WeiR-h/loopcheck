@@ -31,6 +31,7 @@ jobs:
           python -m unittest discover -s tests -v 2>&1 | tee .test-data/ci-tests.log
           node --check web/projects.js
           node --check web/requirements.js
+          node --check web/guided.js
       - name: Original budget regression gate
         run: python scripts/project_gate.py
       - name: Future requirements and MCP evidence gate
@@ -49,8 +50,8 @@ jobs:
           path: |
             .test-data/ci-tests.log
             .test-data/ci-server.log
-            docs/evidence/v05-benchmark.json
-            docs/evidence/v05-frozen-cases.json
+            docs/evidence/v051-benchmark.json
+            docs/evidence/v051-frozen-cases.json
             docs/evidence/v05-cart-gate.json
             docs/evidence/v05-mcp.json
           retention-days: 30
@@ -71,5 +72,5 @@ jobs:
         if: always()
         with:
           name: container-verification
-          path: docs/evidence/v05-container-check.json
+          path: docs/evidence/v051-container-check.json
           retention-days: 30
