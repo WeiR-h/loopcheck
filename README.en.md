@@ -52,7 +52,7 @@ Tests use isolated storage. The live-model evaluation script freezes artifacts b
 
 ## Earlier publication evidence
 
-[Public repository](https://github.com/WeiR-h/loopcheck). [0.5.0 source package](https://github.com/WeiR-h/loopcheck/releases/tag/v0.5.0) is published. [Version-specific Linux CI](https://github.com/WeiR-h/loopcheck/actions/runs/34589055868) passed 35 tests, 12 frozen cases, the cart/MCP gate and the 768 MiB public-container check (326.74 MiB peak). This is not an AWS deployment test. AWS hosting, publicly hosted video and final Devpost submission remain independent pending steps. AgentCore is not deployed. [Architecture](docs/architecture.md) · [Submission draft](docs/SUBMISSION.en.md) · [Delivery status](docs/验证记录-v05.md).
+[Public repository](https://github.com/WeiR-h/loopcheck). [0.5.0 source package](https://github.com/WeiR-h/loopcheck/releases/tag/v0.5.0) is published. [Version-specific Linux CI](https://github.com/WeiR-h/loopcheck/actions/runs/34589055868) passed 35 tests, 12 frozen cases, the cart/MCP gate and the 768 MiB public-container check (326.74 MiB peak). This is not an AWS deployment test. For current 0.5.2, the video is public and [Devpost submission is confirmed](https://devpost.com/software/intakeloop-event-submission-assistant). AWS hosting and free live AI planning access remain pending. AgentCore is not deployed. [Architecture](docs/architecture.md) · [Submission draft](docs/SUBMISSION.en.md) · [Delivery status](docs/验证记录-v05.md).
 
 MIT for LoopCheck and original examples, created with AI coding assistance. MDN fixtures are pinned and distributed unchanged with CC0 licenses and source notices under `examples/public`. TodoMVC React benchmark fixture retains its upstream MIT license and pinned provenance.
 

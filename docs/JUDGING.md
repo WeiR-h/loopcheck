@@ -10,4 +10,4 @@ Live Strands planning is a separate entry using a pinned, unchanged MDN shopping
 
 Public mode accepts bundled samples only. Native local mode can connect a trusted folder and running preview; MCP exposes three tools and cannot approve requirements. Missing, stale, interrupted and uncovered checks cannot authorize a change.
 
-Hosted live-provider access and final Devpost submission remain pending. See [current external delivery evidence](evidence/v052-publication.json) and [retained attempts](VERIFICATION-0.5.2.md). No human-efficiency percentage or prize outcome is claimed.
+[Devpost submission is confirmed](https://devpost.com/software/intakeloop-event-submission-assistant). Hosted live-provider access remains pending; portal submission does not establish eligibility acceptance. See [current external delivery evidence](evidence/v052-publication.json) and [retained attempts](VERIFICATION-0.5.2.md). No human-efficiency percentage or prize outcome is claimed.

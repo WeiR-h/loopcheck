@@ -41,10 +41,20 @@
     "gallery_images": 6,
     "architecture_uploaded": true,
     "additional_fields_saved": true,
-    "builder_id": "pending_user",
+    "builder_id": "Verified in the signed-in Builder Center account and saved to Devpost; identity not published in this report",
     "free_hosted_live_planning": "pending_AWS_login_and_deployment",
-    "submitted": false,
-    "receipt": null
+    "submitted": true,
+    "receipt": {
+      "message": "Project submitted! Continue to edit your project until the hackathon deadline: September 14, 2026 at 08:00pm EDT.",
+      "public_url": "https://devpost.com/software/intakeloop-event-submission-assistant",
+      "submission_id": "1174865",
+      "verified_via": "Signed-in Devpost success banner and SUBMITTED TO Agents for Humans Hackathon",
+      "local_screenshot": ".test-data/submission-v052/devpost-submitted.png"
+    },
+    "steps_complete": 5,
+    "final_terms_confirmation": "confirmed_by_user_before_submission",
+    "last_checked_at": "2026-09-12T10:44:09.319871+00:00",
+    "limitation": "Portal submission confirmed; free live AI planning access remains pending. No organizer eligibility acceptance or award is claimed."
   },
   "human_efficiency": "NOT MEASURED",
   "aws_resources_created": false

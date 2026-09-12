@@ -1,6 +1,6 @@
 # LoopCheck 0.5.2
 
-[下载 0.5.2](https://github.com/WeiR-h/loopcheck/releases/tag/v0.5.2) · [英文演示视频](https://www.youtube.com/watch?v=-Gp8uHgHy-s) · [已通过的 Linux 与容器验证](https://github.com/WeiR-h/loopcheck/actions/runs/34670989974) · [当前交付状态](docs/evidence/v052-publication.json)。比赛尚未最终提交。
+[下载 0.5.2](https://github.com/WeiR-h/loopcheck/releases/tag/v0.5.2) · [英文演示视频](https://www.youtube.com/watch?v=-Gp8uHgHy-s) · [已通过的 Linux 与容器验证](https://github.com/WeiR-h/loopcheck/actions/runs/34670989974) · [当前交付状态](docs/evidence/v052-publication.json)。[比赛作品已提交](https://devpost.com/software/intakeloop-event-submission-assistant)；免费 AI 规划评审访问仍待补齐。
 
 
 本轮增加真实 AI 规划入口、连接与预算检查、按进度提示下一步和公开样例预览链接。已有要求时优先检查当前改动。48 项自动测试与 12 个冻结改动案例通过；真实模型规划的成功与失败记录分别保留。参赛源码、公开视频、免费访问和最终提交是独立状态，请查看 [0.5.2 验证与交付记录](docs/VERIFICATION-0.5.2.md)。
@@ -37,8 +37,8 @@
 
 0.5 支持每项目 10 条启用要求、10 条执行流程、每条最多 20 步。仅支持可信本地小型网页，不覆盖登录、支付、复杂后端。公开版本只提供随包样例，不开放任意目录连接或源码上传。
 
-AWS 部署、免费评审地址、视频公开上传及最终提交仍是独立交付步骤。本轮未创建付费资源，不保证获奖，不宣称人工时间减少比例。
+视频已公开、Devpost 已提交；AWS 部署与免费 AI 规划评审访问仍待完成。本轮未创建付费资源，不保证获奖，不宣称人工时间减少比例。
 
 ## 公开交付状态（2026-09-11）
 
-[0.5.0 下载包](https://github.com/WeiR-h/loopcheck/releases/tag/v0.5.0) 已公开并验证匿名下载。[新版 Linux CI](https://github.com/WeiR-h/loopcheck/actions/runs/34589055868) 通过 35 项测试、12 个冻结案例、购物车与 MCP 验证，以及 768 MiB 限制的容器检查（峰值 326.74 MiB）。AWS 在线评审入口、公开视频和正式提交仍待完成。
+[0.5.0 下载包](https://github.com/WeiR-h/loopcheck/releases/tag/v0.5.0) 已公开并验证匿名下载。[新版 Linux CI](https://github.com/WeiR-h/loopcheck/actions/runs/34589055868) 通过 35 项测试、12 个冻结案例、购物车与 MCP 验证，以及 768 MiB 限制的容器检查（峰值 326.74 MiB）。这是 0.5.0 的历史验证；0.5.2 视频已公开且正式提交，AWS 在线评审入口仍待完成。

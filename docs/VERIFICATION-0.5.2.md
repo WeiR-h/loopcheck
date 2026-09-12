@@ -27,12 +27,12 @@ Screenshots under `audit-v052` cover the entry, original goal, requirement revie
 |---|---|
 | Public source | 0.5.2 published; anonymous archive and all 209 manifest entries verified |
 | Version-specific Linux/container checks | 0.5.2 Linux and container checks passed (48 tests, 12 cases, 328.53 MiB container peak) |
-| Architecture PDF | Created and visually reviewed locally |
+| Architecture PDF | Created, visually reviewed and uploaded to Devpost |
 | Free live judge access | Pending AWS account login, deployment and public verification |
 | Public YouTube/Vimeo video | Public on YouTube; Studio publication and 3:40 watch page verified |
-| AWS Builder ID | Required identity not yet supplied |
-| Devpost draft | LoopCheck details, six images, video, architecture and additional fields saved; Builder ID missing; not submitted |
-| Final submission | Not submitted; no organizer acceptance or award claimed |
+| AWS Builder ID | Verified from the signed-in Builder Center account and saved to Devpost; identity omitted here |
+| Devpost fields | LoopCheck details, six images, video, architecture, Builder ID and additional fields saved |
+| Final submission | Submitted on 2026-09-12; explicit Project submitted! banner and contest listing verified. No organizer eligibility acceptance or award claimed |
 
 The official rules were checked on 2026-09-11: https://agentsforhumans.devpost.com/rules. Submission closes 2026-09-15 08:00 Asia/Shanghai; test access must remain available through judging. Live hosting is optional, but functional free test access is required. Strands, public MIT/Apache source, English material, README, architecture, Builder ID and a public video of at most five minutes are required.
 
@@ -50,4 +50,4 @@ Full-page screenshots produced stitching artifacts while the interface updated. 
 
 ## Published artifacts (2026-09-12)
 
-[Source release](https://github.com/WeiR-h/loopcheck/releases/tag/v0.5.2) pins `1a4b659491c18af66195d9cee218f75adf708535`. [CI](https://github.com/WeiR-h/loopcheck/actions/runs/34670989974) passed both jobs. Anonymous archive download and every manifest entry were checked; see `evidence/v052-publication.json`. The [English video](https://www.youtube.com/watch?v=-Gp8uHgHy-s) is public. Devpost remains an incomplete draft. No cloud resources were created; Builder ID and hosted live-provider access remain pending.
+[Source release](https://github.com/WeiR-h/loopcheck/releases/tag/v0.5.2) pins `1a4b659491c18af66195d9cee218f75adf708535`. [CI](https://github.com/WeiR-h/loopcheck/actions/runs/34670989974) passed both jobs. Anonymous archive download and every manifest entry were checked; see `evidence/v052-publication.json`. The [English video](https://www.youtube.com/watch?v=-Gp8uHgHy-s) is public. [Devpost submission](https://devpost.com/software/intakeloop-event-submission-assistant) is confirmed after explicit user agreement to the rules and terms. The success banner and SUBMITTED TO contest listing were inspected, and a local screenshot was retained. Builder ID was saved without publishing the identity here. No cloud resources were created; hosted live-provider access remains pending. The user authorized submitting this disclosed limited version first.
