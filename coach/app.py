@@ -21,6 +21,7 @@ from .scenarios import SCENARIOS, scenario_code
 from .reports import report_markdown, project_zip
 from .projects import Projects
 from .project_api import router as project_router
+from .sample_security import sample_csp
 
 store = Store()
 engine = Engine(store)
@@ -84,7 +85,7 @@ async def isolation(request: Request, call_next):
                             secure=request.url.scheme == 'https', max_age=60 * 60 * 24 * 40)
     response.headers['X-Content-Type-Options'] = 'nosniff'
     response.headers['Referrer-Policy'] = 'no-referrer'
-    response.headers['Content-Security-Policy'] = "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
+    response.headers['Content-Security-Policy'] = sample_csp(request.url.path)
     if request.url.path.startswith('/api/'):
         response.headers['Cache-Control'] = 'no-store'
     elif request.url.path in ('/', '/judge') or request.url.path.startswith('/static/'):
@@ -152,7 +153,7 @@ def legacy():
 
 @app.get('/health')
 def health():
-    return {'status': 'ok', 'version': '0.5.1'}
+    return {'status': 'ok', 'version': '0.5.2'}
 
 
 @app.get('/api/state')
@@ -321,4 +322,5 @@ app.include_router(project_router(projects))
 app.mount('/static', StaticFiles(directory=ROOT / 'web'), name='static')
 app.mount('/samples/budget', StaticFiles(directory=ROOT / 'examples' / 'budget', html=True), name='budget-demo')
 app.mount('/samples/cart', StaticFiles(directory=ROOT / 'examples' / 'cart', html=True), name='cart-demo')
+app.mount('/samples/public', StaticFiles(directory=ROOT / 'examples' / 'public', html=True), name='public-examples')
 app.mount('/demo', StaticFiles(directory=FIXTURES, html=True), name='original-demo')

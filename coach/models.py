@@ -40,35 +40,63 @@ class BudgetModel(OpenAIModel):
         if len(json.dumps(request, ensure_ascii=False).encode()) > 28_000:
             raise ValueError('本次上下文超过首版限制，请缩小问题范围')
         reserve = (32_000 * self.prices[0] + 2500 * self.prices[1]) / 1_000_000
-        call = self.store.reserve(self.run_id, self.config['model_id'], reserve, self.limit)
-        self.on_call('正在请求模型；已预留本次费用')
-        async for event in super().stream(messages, tool_specs, system_prompt, tool_choice=tool_choice, **kwargs):
-            usage = event.get('metadata', {}).get('usage')
-            if usage:
-                self.store.settle(call, usage, *self.prices)
-            yield event
+        for attempt in range(2):
+            if time.monotonic() > self.deadline: raise ValueError('代理已达到本次任务时限')
+            self.on_call('Requesting the model; reserving this attempt in the persistent budget')
+            call = self.store.reserve(self.run_id, self.config['model_id'], reserve, self.limit)
+            # The provider is non-streaming. Buffer its small response so a
+            # transport retry never delivers half a tool call twice to Strands.
+            buffered = []
+            try:
+                async for event in super().stream(messages, tool_specs, system_prompt, tool_choice=tool_choice, **kwargs):
+                    usage = event.get('metadata', {}).get('usage')
+                    if usage: self.store.settle(call, usage, *self.prices)
+                    buffered.append(event)
+            except Exception as exc:
+                if attempt == 0 and error_code(exc) in {'connection', 'timeout'}:
+                    self.on_call('Transient provider connection failure; retrying once. Unknown cost remains reserved.')
+                    continue
+                raise
+            for event in buffered: yield event
+            return
+
+
+def error_chain(exc):
+    chain = []
+    while exc is not None and len(chain) < 6 and all(exc is not item for item in chain):
+        chain.append(exc)
+        exc = getattr(exc, '__cause__', None) or getattr(exc, '__context__', None)
+    return chain
+
+
+def error_code(exc):
+    """Classify without persisting exception text, response bodies or credentials."""
+    chain = error_chain(exc)
+    statuses = {getattr(item, 'status_code', None) for item in chain}
+    if statuses & {401, 403}: return 'model_access'
+    if 429 in statuses: return 'model_limit'
+    if 400 in statuses: return 'model_request'
+    if any('timeout' in type(item).__name__.lower() for item in chain): return 'timeout'
+    if any('connect' in type(item).__name__.lower() for item in chain): return 'connection'
+    return 'task_error'
 
 
 def safe_error(exc):
-    cause = exc
-    for _ in range(5):
-        next_cause = getattr(cause, '__cause__', None)
-        if not next_cause or next_cause is cause:
-            break
-        cause = next_cause
+    chain = error_chain(exc)
     authored = ('本次', '已达到', '代理已达到', '当前支持', '请先在本地')
-    if isinstance(cause, ValueError) and str(cause).startswith(authored):
-        return str(cause)[:240]
+    for cause in chain:
+        if isinstance(cause, ValueError) and str(cause).startswith(authored):
+            return str(cause)[:240]
+    code = error_code(exc)
+    messages = {
+        'model_access': 'The model rejected authentication or access. Check the configured provider key and model access, then retry.',
+        'model_limit': 'The provider rejected this request because of quota or rate limits. Check the provider account before retrying.',
+        'model_request': 'The provider did not accept this request. Check the configured model and request limits before retrying.',
+        'timeout': 'The model or browser timed out. Check the preview and provider connection, then retry. This result cannot approve the change.',
+        'connection': 'The provider connection was interrupted. Check the network and retry. No requirements were approved by this failed run.',
+    }
+    if code in messages: return messages[code]
     if isinstance(exc, ValueError) and not getattr(exc, 'response', None):
         # Only explicitly authored application errors are exposed by callers.
         return '本次任务因配置、输入或执行上限停止，请查看进度记录并缩小问题范围'
-    status = getattr(cause, 'status_code', None)
-    if status in (401, 403):
-        return '模型认证或权限被拒绝，请检查百炼北京地域密钥、开通状态和模型权限'
-    if status == 429:
-        return '模型额度不足或请求被限流；本次已停止，未自动切换其他付费模型'
-    if status == 400:
-        return '模型未接受请求，请核对模型开通与接口配置'
-    if 'Timeout' in type(exc).__name__:
-        return '模型或执行器响应超时，本次未采用任何修改'
-    return '本次修复未完成，原版本保持不变。查看下方失败检查后，可以缩小问题范围再试。'
+    return 'This task could not finish reliably. Review its progress, check the preview and provider connection, then retry or narrow the goal. This result cannot approve the change.'

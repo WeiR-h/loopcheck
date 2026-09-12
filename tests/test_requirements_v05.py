@@ -160,6 +160,9 @@ class RequirementTests(ProjectTests):
         self.assertIsNone(self.service.current_requirements(self.owner,self.p['id'])[0]['flow'])
         draft=self.service.get(self.owner,result['draft_id'],'draft')
         self.assertEqual(draft['requirements'][0]['flow']['steps'][0]['value'],'Milk')
+        view = self.service.result_view(result)
+        self.assertFalse(view['historical'], 'Latest planning activity is not an old check')
+        self.assertFalse(view['can_accept'], 'A planning draft never approves the change')
 
 
 # Do not rerun inherited v0.4 cases under this class.

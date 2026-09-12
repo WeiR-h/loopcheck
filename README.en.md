@@ -1,8 +1,6 @@
-# LoopCheck 0.5.1
+# LoopCheck 0.5.2
 
-0.5.1 is published: [source package](https://github.com/WeiR-h/loopcheck/releases/tag/v0.5.1) · [version-specific Linux and container verification](https://github.com/WeiR-h/loopcheck/actions/runs/34593439800). All 37 tests and 12 frozen cases passed; anonymous download and the package manifest were verified. [Publication evidence](docs/evidence/v051-publication.json).
-
-**New in 0.5.1:** use “Try the full flow · no API key” to approve a baseline, add an uncovered coupon requirement, inject a sample regression, inspect evidence and recheck the repair. Preset requirements and scripted edits are disclosed; browser checks are real and use no model. AI planning for real projects still needs a server-side key. [Walkthrough and verification](docs/KEYLESS-DEMO.md).
+Live Strands planning and a disclosed keyless walkthrough are separate entry points. Check source, preview and recorded model-budget readiness before planning; approved flows replay without a model request. Public sample links open on the deployed host. [Release notes](docs/RELEASE-0.5.2.en.md) · [Retained verification attempts](docs/VERIFICATION-0.5.2.md).
 
 **Keep every change honest.** [中文](README.md)
 
@@ -32,7 +30,7 @@ Use **Connect my coding AI** to obtain local stdio configuration. Keep credentia
 
 [0.5 verification](docs/验证记录-v05.md) records all failed attempts. Twelve frozen artificial mutations met expected outcomes: six faults detected, six normal changes passed. A real shopping-cart development gate demonstrated passed → incomplete → regression → passed. These developer-defined tests are separate from agent planning.
 
-Live Strands/Qwen planning was tested on four frozen goals in two pinned MDN CC0 examples. All five rounds are retained: 0/4, 1/4, 2/4, 0/4, then 4/4 passing goals. The latest round covers item addition and deletion plus dialog cancellation and selection/confirmation. The full 35-test suite also passes. Short requirement references, compact step submissions and evidence-based locator correction reduce avoidable planning failures; retries preserve assertion types and expected values. This is a small debugging evaluation, not a production success rate. Human review remains essential. No human time-saving percentage or external user study is claimed.
+Historical 0.5.0 planning used four frozen goals in two pinned MDN CC0 examples. Its five retained debugging rounds finished 0/4, 1/4, 2/4, 0/4, then 4/4; its 35-test suite passed at that version. Current 0.5.2 evidence is 48 passing local tests and two new four-goal planning rounds of 2/4 and 1/4, with provider connection failures retained. Short requirement references, compact step submissions and evidence-based locator correction reduce avoidable planning failures; retries preserve assertion types and expected values. This is a small debugging evaluation, not a production success rate. Human review remains essential. No human time-saving percentage or external user study is claimed.
 
 Limits: 10 active requirements and 10 flows per project, 20 steps per flow; retired records do not consume active quota. Exploration permits three observations and six replayed actions per path. Each observation/flow starts fresh; network stays on the selected origin. Missing/ambiguous elements, blocked dependencies, interruption, empty scopes and stale results cannot approve a change. Frontend tracking excludes secrets, hidden folders, dependencies and build outputs; maximum 2000 files/20 MB, 1 MB each. This is not a hostile repository sandbox, login/payment tester or backend verification platform.
 
@@ -49,8 +47,14 @@ python scripts/evaluate_projects.py
 
 Tests use isolated storage. The live-model evaluation script freezes artifacts before calling the configured provider and refuses to overwrite an existing evaluation. Model evaluation costs money; ordinary rechecks do not.
 
-## Publication
+## Earlier publication evidence
 
 [Public repository](https://github.com/WeiR-h/loopcheck). [0.5.0 source package](https://github.com/WeiR-h/loopcheck/releases/tag/v0.5.0) is published. [Version-specific Linux CI](https://github.com/WeiR-h/loopcheck/actions/runs/34589055868) passed 35 tests, 12 frozen cases, the cart/MCP gate and the 768 MiB public-container check (326.74 MiB peak). This is not an AWS deployment test. AWS hosting, publicly hosted video and final Devpost submission remain independent pending steps. AgentCore is not deployed. [Architecture](docs/architecture.md) · [Submission draft](docs/SUBMISSION.en.md) · [Delivery status](docs/验证记录-v05.md).
 
 MIT for LoopCheck and original examples, created with AI coding assistance. MDN fixtures are pinned and distributed unchanged with CC0 licenses and source notices under `examples/public`. TodoMVC React benchmark fixture retains its upstream MIT license and pinned provenance.
+
+## 0.5.2 delivery status
+
+The current local suite passed 48 tests; twelve frozen mutation cases met their expected outcomes. A real UI planning flow produced two approved browser checks and a successful zero-model-call replay. Two fresh four-goal runs finished 2/4 and 1/4 respectively, with provider connection failures retained. These small debugging runs are not a production success rate. See the version report for exact publication, hosting, video and submission states.
+
+[Upload-ready architecture PDF](output/pdf/LoopCheck-architecture.pdf). The video authoring script requires locally captured CUA frame sequences and Windows English speech; these are media production inputs, not dependencies for running LoopCheck.

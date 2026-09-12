@@ -1,0 +1,32 @@
+{
+  "live-recheck": {
+    "frames": 78,
+    "first_capture_ms": 1789137545865,
+    "last_capture_ms": 1789137555779,
+    "disclosure": "Actual unaltered viewport frames; original frame intervals retained within this segment."
+  },
+  "baseline": {
+    "frames": 127,
+    "first_capture_ms": 1789137161818,
+    "last_capture_ms": 1789137173752,
+    "disclosure": "Actual unaltered viewport frames; original frame intervals retained within this segment."
+  },
+  "uncovered": {
+    "frames": 72,
+    "first_capture_ms": 1789137206875,
+    "last_capture_ms": 1789137215790,
+    "disclosure": "Actual unaltered viewport frames; original frame intervals retained within this segment."
+  },
+  "regression": {
+    "frames": 123,
+    "first_capture_ms": 1789137245578,
+    "last_capture_ms": 1789137258533,
+    "disclosure": "Actual unaltered viewport frames; original frame intervals retained within this segment."
+  },
+  "repaired": {
+    "frames": 103,
+    "first_capture_ms": 1789137453170,
+    "last_capture_ms": 1789137464116,
+    "disclosure": "Actual unaltered viewport frames; original frame intervals retained within this segment."
+  }
+}

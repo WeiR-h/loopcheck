@@ -64,6 +64,12 @@ def router(service):
         try: return snapshot(p['root'])['hash']
         except (OSError, ValueError): return None
 
+    @api.get('/{project_id}/readiness')
+    def readiness(project_id: str, request: Request):
+        from .readiness import inspect
+        try: return inspect(service, request.state.owner, project_id)
+        except (ValueError, OSError) as exc: fail(exc)
+
     @api.post('/guided-demo')
     def guided_start(request: Request):
         from .guided_demo import start
@@ -82,8 +88,11 @@ def router(service):
         projects = service.list(owner, 'project')
         runs = service.list(owner, 'run')
         contexts = {p['id']: {'project': p, 'source_hash': source_hash(p),
+                    'latest_activity': next((r['id'] for r in runs if r['project_id']==p['id']), None),
                     'latest_check': next((r['id'] for r in runs if r['project_id']==p['id'] and r['mode']=='check'), None)} for p in projects}
-        return {'projects': [{**service.public(p), 'current_source_hash': contexts[p['id']]['source_hash']} for p in projects],
+        from .readiness import preview_link
+        public = os.environ.get('APP_PUBLIC') == 'true'
+        return {'projects': [{**service.public(p), 'preview_url': preview_link(p, public), 'current_source_hash': contexts[p['id']]['source_hash']} for p in projects],
                 'runs': [service.result_view(r, contexts[r['project_id']]) for r in runs[:30]],
                 'busy': bool(service.active), 'model': public_model(), 'public': os.environ.get('APP_PUBLIC') == 'true',
                 'budget': service.store.budget(), 'budget_limit_cny': settings()['budget_cny']}
@@ -112,6 +121,16 @@ def router(service):
         try:
             return service.public(service.connect(request.state.owner, ROOT / 'examples/cart',
                 f'http://127.0.0.1:{port}/samples/cart/', 'Everyday Cart', sample=True))
+        except (ValueError, OSError) as exc: fail(exc)
+
+    @api.post('/sample/public/{name}')
+    def public_sample(name: str, request: Request):
+        names = {'shopping': 'MDN Shopping List', 'dialog': 'MDN Dialog'}
+        if name not in names: raise HTTPException(404)
+        port = os.environ.get('PORT', '8791')
+        try:
+            return service.public(service.connect(request.state.owner, ROOT / 'examples/public' / name,
+                f'http://127.0.0.1:{port}/samples/public/{name}/', names[name], sample=True))
         except (ValueError, OSError) as exc: fail(exc)
 
     @api.post('/runs/{run_id}/cancel')

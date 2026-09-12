@@ -39,15 +39,17 @@ def main():
             'fixtures':{name:hashlib.sha256((ROOT/f'examples/public/{name}/index.html').read_bytes()).hexdigest() for name in ['shopping','dialog']},
             'disclosure':'Reference outcomes stay in evaluator; model receives only the natural language goal and live page. Test harness confirms drafts to exercise execution; this is not human usability evidence.'}
     suffix = '-retry4' if '--retry4' in sys.argv else '-retry3' if '--retry3' in sys.argv else '-retry2' if '--retry2' in sys.argv else '-retry1' if '--retry1' in sys.argv else ''
-    manifest=ROOT/('docs/evidence/v05-planning-frozen'+suffix+'.json')
+    version = '0.5.2' if '--v052' in sys.argv else '0.5.0'
+    prefix = 'v052' if '--v052' in sys.argv else 'v05'
+    manifest=ROOT/('docs/evidence/'+prefix+'-planning-frozen'+suffix+'.json')
     if manifest.exists(): raise ValueError('Frozen evaluation exists; do not silently overwrite it')
     manifest.write_text(json.dumps(frozen,indent=2),encoding='utf-8')
     store=Store(WORK/'state');service=Projects(store);rows=[]
     class Quiet(http.server.SimpleHTTPRequestHandler):
         def log_message(self,*args): pass
-    report={'version':'0.5.0','frozen_sha256':hashlib.sha256(manifest.read_bytes()).hexdigest(),'work_directory':str(WORK),
+    report={'version':version,'frozen_sha256':hashlib.sha256(manifest.read_bytes()).hexdigest(),'work_directory':WORK.relative_to(ROOT).as_posix(),
             'disclosure':frozen['disclosure'],'human_efficiency':'Not measured','goals':rows}
-    path=ROOT/('docs/evidence/v05-planning-results'+suffix+'.json')
+    path=ROOT/('docs/evidence/'+prefix+'-planning-results'+suffix+'.json')
     try:
         for case in GOALS:
             server=http.server.ThreadingHTTPServer(('127.0.0.1',0),functools.partial(Quiet,directory=str(ROOT/'examples/public'/case['fixture'])))

@@ -1,60 +1,53 @@
-# LoopCheck — Keep your changes honest
-
-## Elevator pitch
-An acceptance companion for solo AI builders: approve browser requirements once, replay them after code changes, and send reproducible regression evidence back to your coding AI.
-
 ## Inspiration
-AI makes it easier to change a small web app, but checking whether an earlier feature still works remains repetitive. We built LoopCheck around the requirements the builder wants to preserve across edits.
+
+AI makes changing a small web app easier. It does not remove the work of checking whether earlier behavior still works. As a solo builder using AI, I wanted to preserve my expectations across edits instead of repeatedly clicking the same pages and describing the same regressions.
+
+LoopCheck focuses on approved business requirements, independent browser evidence, and a clear answer about the current change.
 
 ## What it does
-Connect a local project folder and its running preview. Describe the next change and behaviors that must remain. A Strands agent proposes business requirements before the feature exists. The builder edits and confirms them. A separate planning stage observes the real page, including bounded dialog exploration, and proposes browser checks bound to specific requirement revisions. Missing checks stay uncovered.
 
-After a source change, Chromium replays the approved flows. Results distinguish passed checks, regressions, unmet requirements and cases that could not be reliably checked. Each result is tied to a source hash and a confirmed requirements version. A source edit during a run makes the result stale.
+Connect a trusted local project folder and its running frontend preview. Describe what is changing and what must keep working. A Strands agent proposes business requirements, including future features whose controls do not yet exist. The builder reviews and confirms them.
 
-A local MCP bridge exposes prepare_change, check_change and get_result. Your existing coding AI receives failed steps, expected and observed behavior, source filenames and screenshot evidence. It fixes the original project; LoopCheck verifies the same requirements again. MCP cannot approve or rewrite those requirements.
+Once a feature exists, a separate planning stage observes the live page, explores bounded paths such as opening a dialog, and proposes executable browser checks. Each flow is tied to a requirement revision and reviewed before use. Missing checks remain uncovered; they cannot disappear behind passing old checks.
 
-## 0.5.1 guided access
+After the coding AI changes the original project, LoopCheck replays the same approved flows without another model request. Results include expected and observed behavior, screenshots, complete reproduction steps, related files and source/requirement versions. Concurrent edits make an old result stale. Only a current, nonempty, fully covered and passing scope can approve the change.
 
-A keyless sample walkthrough now exposes the complete requirement lifecycle with real browser checks. Its preset requirements and scripted source edits are explicitly disclosed; it is separate from live Strands planning and does not demonstrate autonomous coding. Current coverage remains visible while reviewing historical failures, and the full reproduction brief can be expanded directly. See [retained verification attempts](KEYLESS-DEMO.md).
+Requirements can be revised, retired with a reason, restored or given a rebuilt check. These changes require reviewed drafts. The model cannot silently weaken assertions, retire a failing requirement or approve its own work.
 
-## How we built it
-Python, FastAPI, Strands Agents SDK, Qwen3.7 Flash via Alibaba Cloud Model Studio Beijing, Playwright/Chromium, SQLite and MCP. Strands performs real page observation, proposes structured browser actions and trial-runs its proposal. Deterministic browser assertions decide subsequent outcomes without model calls.
+## Working demonstration
 
-The local edition supports small HTML/JavaScript and React/Vite previews. Each project can keep 10 active requirements and 10 flows with at most 20 steps each. Business requirements support reviewed edits, retirement, restoration and rebuilding. A shared browser slot, persistent model budget and debounced source watcher bound work. Public mode accepts only bundled examples and disables local directory and MCP access. AgentCore is not deployed.
+The live planning path uses a pinned, unchanged public MDN shopping-list example. Strands and Qwen generated requirements and two flows covering item text, cleared input and deletion. After operator review, both flows passed. An ordinary replay also passed with zero model calls. The recorded tool trace and unsuccessful planning attempts remain available.
+
+A separate, explicitly disclosed keyless cart walkthrough demonstrates the complete regression cycle with real Chromium checks. It establishes a baseline, saves an uncovered coupon requirement, introduces a scripted feature plus a deliberate price regression, returns failure evidence, and restores the price before rechecking the same requirements. The old total check expects 200.00 and observes 300.00. After repair, all four flows pass. Its requirements and code edits are presets; this is not a claim of autonomous coding.
+
+The video combines actual interface recordings within these stages and recorded live-planning evidence. Cuts between stages, synthetic narration and deliberately injected faults are disclosed.
+
+## How I built it
+
+Python, FastAPI, Strands Agents SDK, Qwen3.7 Flash through Alibaba Cloud Model Studio Beijing, Playwright/Chromium, SQLite and MCP. Strands selects page observations, proposes requirements and steps, and invokes trial verification. Browser assertions determine acceptance independently of the model's summary.
+
+The local MCP interface exposes prepare_change, check_change and get_result. It returns evidence to an existing coding tool and cannot approve drafts. Original source remains in the user's project. Source tracking excludes keys, hidden directories, dependencies and build outputs.
+
+Public mode accepts bundled samples only and keeps sessions separate. The provider key stays on the server. Model requests reserve costs persistently, including unknown costs after an interrupted request. Ordinary rechecks do not use a model. AgentCore is not deployed.
 
 ## Challenges and learning
-The first live planning attempt confused a negative input with a negative calculated balance and proposed a value assertion against a non-editable output element. That proposal was not approved. We added element metadata, clearer instructions and trial execution before review. The second live preparation produced three executable flows that passed a real browser baseline. Human review is still necessary: successful execution alone does not prove a proposal captures the user's intent.
 
-We also found a completion-state race in the original guard: the result could become final just before its worker slot was released. We changed publication order and reran the suite. Failures are documented alongside final results.
+Executable checks are not automatically correct business requirements. Early attempts confused element text and editable values, guessed selectors or consumed request limits. I separated intent from execution, added trial runs, preserved exact assertions on locator retries, simplified initial observation, and stopped the agent after saving a review draft.
 
-## 0.5 daily requirement workflow
+Browser verification exposed a deployment-specific problem: inline scripts in the newly mounted MDN samples were blocked by the application security policy. Exact hashes now permit only those pinned assets. A real browser test exercises their behavior through the production middleware.
 
-An active requirement may have no flow. A mixed scope of passing old checks and uncovered new expectations is `incomplete`, never `passed`. Each result snapshots source, requirement revisions and flows; the API computes `can_accept` against current versions and the latest check. A historical green result cannot authorize current development. Failure evidence includes the complete reproduction sequence, prerequisite state, failed location, expected/actual values, screenshots and related files.
+Provider connections remain a limitation. Two new four-goal evaluation rounds completed 2/4 and 1/4 goals respectively, with connection failures retained. A bounded retry does not guarantee availability. These small debugging rounds are not a production success rate.
 
-The cart development gate recorded baseline pass → future coupon requirement incomplete → implemented coupon plus injected price regression fails → repaired source passes all four checks. Actual MCP stdio verification retrieved full failure evidence and rejected historical approval.
+## Verification and limits
 
-Four live Strands/Qwen planning goals on pinned MDN shopping-list and dialog samples produced 0/4, 1/4, 2/4, 0/4 and 4/4 passing goals across five retained rounds. The latest round passes all four goals after improving requirement references, compact step submissions and bounded locator correction. The full 35-test suite and all 12 frozen mutation cases pass. This debugging evaluation is not a production success-rate claim. All unsuccessful attempts remain in the evidence folder.
+The final local suite passed 48 tests. Twelve frozen artificial changes across a budget calculator, TodoMVC React and LoopCheck's own frontend met all expected outcomes: six injected faults were detected and six non-fault changes passed. The frozen flows are developer-defined tests, separate from model-planning evaluation. Records, fixture versions and licenses are included in the repository.
 
-## Historical 0.4 results
-The frozen automated evaluation contains 12 deliberately constructed changes across an original budget calculator, a pinned public TodoMVC React example, and LoopCheck's own frontend. All six injected faults were detected; all six non-fault changes passed. This is a small, disclosed regression exercise using frozen developer-authored requirements, not a model success rate on unknown applications.
+LoopCheck targets small HTML/JavaScript and React/Vite frontends: up to ten active requirements, ten flows and twenty steps per flow. Exploration is bounded to three fresh observations and six actions per path. Login, payments, complex backends and hostile repository execution are outside this release. No measured human-efficiency percentage, external user study, production-reliability guarantee or prize outcome is claimed.
 
-The real MCP client completed pass → injected arithmetic regression → repair → pass. The failed calculation expected 850.00 and observed 1550.00. Rechecks used no model calls. See docs/evidence/v04-live.json, v04-benchmark.json and v04-release-checks.json for the actual records.
+## What's next
 
-## Limits and next steps
-No measured human-efficiency benefit, external user study, production reliability or guaranteed prize outcome is claimed. Login, payments, complex backends and arbitrary repository repair are outside this release. Retired requirements stay in history with a reason and do not count as passed. Modified requirements cannot inherit an old passing result. Source versioning covers included frontend files, not changes to databases or runtime configuration.
+Improve planning reliability on unseen pages and collect paired human verification measurements. The immediate value to test is fewer repeated manual checks and less effort transferring regression evidence to the coding AI.
 
-Next: improve agent planning reliability on unseen pages, then measure human verification time only with an actual paired human experiment.
+## Attribution
 
-## Attribution and publication fields
-Built with AI coding assistance. Pocket Budget is an original example. TodoMVC React is pinned with its upstream license and provenance in the frozen manifest. Runtime planning used the real connected model; unit tests that simulate provider responses are labeled.
-
-This is an AI-assisted submission draft for author review.
-
-- Public repository: https://github.com/WeiR-h/loopcheck
-- Automated verification: https://github.com/WeiR-h/loopcheck/actions/runs/34589055868
-- Versioned source download: https://github.com/WeiR-h/loopcheck/releases/tag/v0.5.0
-- Free judge URL: pending AWS deployment and external verification.
-- YouTube/Vimeo URL: pending publication.
-- Builder profile: author to supply.
-
-Public source and local readiness are not a completed submission. No human time-saving result is claimed.
+Built by one person with AI coding assistance. LoopCheck and its original samples are MIT licensed. MDN examples retain pinned provenance and CC0 licenses; TodoMVC React retains its upstream MIT license and fixed revision. See the README, architecture and retained verification records for installation and evidence boundaries.

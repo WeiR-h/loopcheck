@@ -6,12 +6,36 @@ import unittest
 from unittest.mock import patch
 
 import httpx
+from openai import AsyncOpenAI
 
 from coach.models import BudgetModel
 from coach.store import Store
 
 
 class ModelAdapterTests(unittest.IsolatedAsyncioTestCase):
+    async def test_one_transport_retry_reserves_unknown_cost_and_is_bounded(self):
+        for succeeds in (True,False):
+            with self.subTest(succeeds=succeeds), tempfile.TemporaryDirectory() as tmp:
+                store=Store(tmp); calls=[]
+                def respond(request):
+                    calls.append(1)
+                    if len(calls)==1 or not succeeds: raise httpx.ReadError('offline transport failure',request=request)
+                    return httpx.Response(200,json={'id':'offline','created':0,'object':'chat.completion','model':'qwen3.7-flash',
+                        'choices':[{'index':0,'message':{'role':'assistant','content':'OK'},'finish_reason':'stop'}],
+                        'usage':{'prompt_tokens':10,'completion_tokens':1,'total_tokens':11}})
+                def fresh_client(**kwargs):
+                    return AsyncOpenAI(**kwargs,http_client=httpx.AsyncClient(transport=httpx.MockTransport(respond)))
+                with patch('strands.models.openai.openai.AsyncOpenAI',side_effect=fresh_client):
+                    with patch('coach.models.settings',return_value={'provider':'dashscope','model':'qwen3.7-flash','key':'test-placeholder','budget_cny':20}):
+                        model=BudgetModel(store,'retry-test')
+                    async def run():return [e async for e in model.stream([{'role':'user','content':[{'text':'OK'}]}])]
+                    if succeeds:self.assertTrue(await run())
+                    else:
+                        with self.assertRaises(Exception):await run()
+                self.assertEqual(len(calls),2)
+                self.assertEqual(store.budget()['calls'],2)
+                self.assertAlmostEqual(store.budget()['unknown_reserved_cny'],.0084 if succeeds else .0168)
+
     async def test_qwen37_tool_request_and_persistent_cost(self):
         with tempfile.TemporaryDirectory() as tmp:
             store = Store(tmp)

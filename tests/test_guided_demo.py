@@ -103,6 +103,26 @@ class GuidedDemoTests(unittest.TestCase):
         self.assertEqual(hashlib.sha256((ROOT/'examples/cart/app.js').read_bytes()).hexdigest(), original)
         self.check_history_ui(failure['id'])
 
+    def test_pinned_public_sample_inline_assets_work_under_csp(self):
+        from playwright.sync_api import sync_playwright, expect
+        os.environ.setdefault('PLAYWRIGHT_BROWSERS_PATH', str(ROOT / '.browsers'))
+        home = self.client.get('/').headers['Content-Security-Policy']
+        sample = self.client.get('/samples/public/shopping/').headers['Content-Security-Policy']
+        self.assertNotIn('unsafe-inline', sample)
+        self.assertNotIn('sha256-', home)
+        self.assertIn('sha256-', sample)
+        with sync_playwright() as pw:
+            browser = pw.chromium.launch(headless=True, args=['--disable-dev-shm-usage'])
+            page = browser.new_page()
+            page.goto(self.url+'/samples/public/shopping/')
+            page.get_by_label('Enter a new item:', exact=True).fill('Milk')
+            page.get_by_role('button', name='Add item', exact=True).click()
+            expect(page.get_by_text('Milk', exact=True)).to_have_text('Milk')
+            expect(page.get_by_label('Enter a new item:', exact=True)).to_have_value('')
+            page.get_by_role('button', name='Delete', exact=True).click()
+            expect(page.get_by_role('listitem')).to_have_count(0)
+            browser.close()
+
     def check_history_ui(self, failure_id):
         from playwright.sync_api import sync_playwright, expect
         os.environ.setdefault('PLAYWRIGHT_BROWSERS_PATH', str(ROOT / '.browsers'))

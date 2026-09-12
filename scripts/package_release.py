@@ -4,7 +4,7 @@ import hashlib, json, sqlite3, zipfile
 from dotenv import dotenv_values
 ROOT=Path(__file__).resolve().parents[1]
 patterns=['.github/workflows/*.yml','coach/*.py','web/*','examples/tasks/*','examples/budget/*','examples/cart/*','examples/public/*/*','tests/*.py','scripts/*.py','scripts/*.ps1',
-          'docs/*.md','docs/evidence/*.json','docs/evidence/*.md','docs/audit-v1/*.png','docs/audit-v04/*.png','docs/video/*.json','docs/video/*.webm']
+          'docs/*.md','docs/evidence/*.json','docs/evidence/*.md','docs/audit-v1/*.png','docs/audit-v04/*.png','docs/audit-v052/*.png','docs/video/*.json','docs/video/*.webm','docs/video/v052/*.png','output/pdf/*.pdf','output/pdf/*.png']
 names=['README.md','README.en.md','CHANGELOG.md','LICENSE','requirements.txt','Dockerfile','compose.yaml',
        'run.py','mcp_server.py','install.ps1','启动应用.cmd','.env.example','.gitignore','.gitattributes','.dockerignore']
 files={ROOT/n for n in names}
@@ -27,10 +27,10 @@ for p in sorted(files):
         raise SystemExit('Private data detected in '+p.relative_to(ROOT).as_posix())
     manifest[p.relative_to(ROOT).as_posix()]=hashlib.sha256(data).hexdigest()
 path=ROOT/'docs/evidence/source-manifest.json'
-path.write_text(json.dumps({'version':'0.5.1','files':manifest},indent=2,ensure_ascii=False),encoding='utf-8')
+path.write_text(json.dumps({'version':'0.5.2','files':manifest},indent=2,ensure_ascii=False),encoding='utf-8')
 files.add(path)
 (ROOT/'dist').mkdir(exist_ok=True)
-archive=ROOT/'dist/loopcheck-v0.5.1-source.zip'
+archive=ROOT/'dist/loopcheck-v0.5.2-source.zip'
 with zipfile.ZipFile(archive,'w',zipfile.ZIP_DEFLATED) as z:
     for p in sorted(files): z.write(p,p.relative_to(ROOT).as_posix())
 with zipfile.ZipFile(archive) as z:

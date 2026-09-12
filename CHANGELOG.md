@@ -1,3 +1,12 @@
+# 0.5.2
+
+- Separate live planning from preset walkthroughs, with read-only connection/budget checks and contextual next steps.
+- Correct public preview links and permit only exact inline hashes for the two pinned MDN samples.
+- Simplify initial observations, retain tool-validation failures, and stop Strands after saving a review draft.
+- Retry a transient provider connection once with separate persistent cost reservations; preserve failure records.
+- Keep current planning distinct from historical checks; ordinary checks still need no model call.
+- 48 local tests and 12 frozen cases pass. New live planning remains connection-sensitive; see the retained report rather than inferring a general success rate.
+
 # 0.5.1
 
 - Add a disclosed, keyless guided cart walkthrough with session-owned sample copies and real browser verification.

@@ -8,7 +8,7 @@ from pathlib import Path
 import threading
 import time
 
-from .models import BudgetModel, safe_error
+from .models import BudgetModel, safe_error, error_code
 from .project_browser import run_browser
 from .project_checks import Proposal, local_url
 from .requirements import Requirements, new_requirement, identity
@@ -197,7 +197,7 @@ class Projects(Requirements):
                     current['last_run'] = run['id']
                     self.save('project', current)
         except Exception as exc:
-            run.update(state='cancelled' if run['id'] in self.cancelled else 'inconclusive', error=safe_error(exc))
+            run.update(state='cancelled' if run['id'] in self.cancelled else 'inconclusive', error=safe_error(exc), error_code=error_code(exc))
         finally:
             run['seconds'] = round(time.time() - run['created'], 2)
             run['usage'] = self.store.budget(run['id'])
