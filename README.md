@@ -1,5 +1,8 @@
 # LoopCheck 0.5.2
 
+[下载 0.5.2](https://github.com/WeiR-h/loopcheck/releases/tag/v0.5.2) · [英文演示视频](https://www.youtube.com/watch?v=-Gp8uHgHy-s) · [已通过的 Linux 与容器验证](https://github.com/WeiR-h/loopcheck/actions/runs/34670989974) · [当前交付状态](docs/evidence/v052-publication.json)。比赛尚未最终提交。
+
+
 本轮增加真实 AI 规划入口、连接与预算检查、按进度提示下一步和公开样例预览链接。已有要求时优先检查当前改动。48 项自动测试与 12 个冻结改动案例通过；真实模型规划的成功与失败记录分别保留。参赛源码、公开视频、免费访问和最终提交是独立状态，请查看 [0.5.2 验证与交付记录](docs/VERIFICATION-0.5.2.md)。
 
 以下保留此前版本说明；其发布日期与结果仅适用于对应版本。

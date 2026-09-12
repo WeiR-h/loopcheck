@@ -25,13 +25,13 @@ Screenshots under `audit-v052` cover the entry, original goal, requirement revie
 
 | Gate | Status |
 |---|---|
-| Public source | 0.5.1 previously verified; 0.5.2 not yet published |
-| Version-specific Linux/container checks | Pending 0.5.2 CI |
+| Public source | 0.5.2 published; anonymous archive and all 209 manifest entries verified |
+| Version-specific Linux/container checks | 0.5.2 Linux and container checks passed (48 tests, 12 cases, 328.53 MiB container peak) |
 | Architecture PDF | Created and visually reviewed locally |
 | Free live judge access | Pending AWS account login, deployment and public verification |
-| Public YouTube/Vimeo video | 3:40 English video created, decoded and visually reviewed; uploaded privately, public release pending |
+| Public YouTube/Vimeo video | Public on YouTube; Studio publication and 3:40 watch page verified |
 | AWS Builder ID | Required identity not yet supplied |
-| Devpost draft | Logged in; existing draft renamed to LoopCheck, not submitted |
+| Devpost draft | LoopCheck details, six images, video, architecture and additional fields saved; Builder ID missing; not submitted |
 | Final submission | Not submitted; no organizer acceptance or award claimed |
 
 The official rules were checked on 2026-09-11: https://agentsforhumans.devpost.com/rules. Submission closes 2026-09-15 08:00 Asia/Shanghai; test access must remain available through judging. Live hosting is optional, but functional free test access is required. Strands, public MIT/Apache source, English material, README, architecture, Builder ID and a public video of at most five minutes are required.
@@ -47,3 +47,7 @@ The actual UI shopping-list flow and its unsuccessful attempts are retained in `
 Recorded UI demonstration: baseline 3/3 (5.24s), future requirement incomplete (5.95s), two price regressions detected among four flows (10.14s), repaired source 4/4 (6.26s). A separate live-generated two-flow recheck passed in 7.54s. Cart code changes and preset approvals were explicitly disclosed. The inline full reproduction brief was verified; the browser clipboard reader returned empty despite the UI copy-success notice, so cross-tool clipboard delivery is not independently verified. Inline/download/MCP evidence remains available.
 
 Full-page screenshots produced stitching artifacts while the interface updated. Original captures remain in the private test directory; published audit images are unaltered single-viewport captures. They are not a claim of a complete accessibility audit.
+
+## Published artifacts (2026-09-12)
+
+[Source release](https://github.com/WeiR-h/loopcheck/releases/tag/v0.5.2) pins `1a4b659491c18af66195d9cee218f75adf708535`. [CI](https://github.com/WeiR-h/loopcheck/actions/runs/34670989974) passed both jobs. Anonymous archive download and every manifest entry were checked; see `evidence/v052-publication.json`. The [English video](https://www.youtube.com/watch?v=-Gp8uHgHy-s) is public. Devpost remains an incomplete draft. No cloud resources were created; Builder ID and hosted live-provider access remain pending.

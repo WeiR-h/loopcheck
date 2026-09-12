@@ -1,9 +1,13 @@
-# LoopCheck 0.5 judging guide
+# LoopCheck 0.5.2 judging guide
 
-Start the local edition with the instructions in README.en.md. Choose Everyday Cart, save a future coupon requirement, and see that an uncovered requirement prevents acceptance. Review requirement changes before confirming. Existing Pocket Budget remains available for browser checks.
+[Download the verified source](https://github.com/WeiR-h/loopcheck/releases/tag/v0.5.2), follow README.en.md and open `/judge`. The [English demonstration](https://www.youtube.com/watch?v=-Gp8uHgHy-s) is public and runs for 3 minutes 40 seconds.
 
-For reproducible automatic evidence, run `scripts/cart_gate_v05.py` then `scripts/verify_mcp_v05.py`. The gate copies the bundled cart, records its browser flows, adds an explicitly scripted feature and regression, then repairs source. It uses no model calls. Requirements are confirmed by the test harness, not a claimed human study.
+The free keyless cart walkthrough uses preset requirements and deliberately scripted edits with real browser checks. Establish a baseline, approve a future coupon requirement, observe incomplete coverage, introduce the disclosed price regression, read full expected/actual reproduction evidence, repair and recheck four approved flows. This path needs no provider key. It is not live model planning.
 
-Inspect `docs/验证记录-v05.md` and `docs/evidence/v05-planning-results*.json` for all live model planning outcomes, including unsuccessful rounds. The latest four-goal round passes both shopping-list and both dialog goals. All five debugging rounds (0/4, 1/4, 2/4, 0/4, 4/4) remain available; this is not held-out generalization evidence. Human review remains necessary.
+Live Strands planning is a separate entry using a pinned, unchanged MDN shopping list. It needs a server-side provider key. Describe the goal, review proposed business requirements, generate and review checks, then replay without another model call. Two generated checks were reviewed and passed in the recorded UI flow. The fresh four-goal debugging rounds finished 2/4 and 1/4; all failures are retained. Earlier 0.5.0 results are historical, not current reliability claims.
 
-Public Docker mode permits only bundled examples. Local project folders and MCP require the native local edition. Hosted judge access, public video publication and final submission are separate pending delivery steps. [0.5.0 is publicly downloadable](https://github.com/WeiR-h/loopcheck/releases/tag/v0.5.0); [its Linux and container verification passed](https://github.com/WeiR-h/loopcheck/actions/runs/34589055868). See evidence/v05-publication.json. This does not establish AWS hosting or a completed submission.
+[The exact release CI](https://github.com/WeiR-h/loopcheck/actions/runs/34670989974) passed 48 tests, the budget/cart/MCP gates and all 12 frozen artificial mutations. The public-mode container passed at a 768 MiB limit with a 328.53 MiB peak. These are CI measurements with zero provider calls, not an AWS or production load test.
+
+Public mode accepts bundled samples only. Native local mode can connect a trusted folder and running preview; MCP exposes three tools and cannot approve requirements. Missing, stale, interrupted and uncovered checks cannot authorize a change.
+
+Hosted live-provider access and final Devpost submission remain pending. See [current external delivery evidence](evidence/v052-publication.json) and [retained attempts](VERIFICATION-0.5.2.md). No human-efficiency percentage or prize outcome is claimed.

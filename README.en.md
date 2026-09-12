@@ -1,5 +1,8 @@
 # LoopCheck 0.5.2
 
+[Download 0.5.2](https://github.com/WeiR-h/loopcheck/releases/tag/v0.5.2) · [English demo video](https://www.youtube.com/watch?v=-Gp8uHgHy-s) · [Passed Linux/container CI](https://github.com/WeiR-h/loopcheck/actions/runs/34670989974) · [Current delivery status](docs/evidence/v052-publication.json).
+
+
 Live Strands planning and a disclosed keyless walkthrough are separate entry points. Check source, preview and recorded model-budget readiness before planning; approved flows replay without a model request. Public sample links open on the deployed host. [Release notes](docs/RELEASE-0.5.2.en.md) · [Retained verification attempts](docs/VERIFICATION-0.5.2.md).
 
 **Keep every change honest.** [中文](README.md)
